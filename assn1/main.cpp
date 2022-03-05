@@ -13,14 +13,31 @@ private:
     SpriteGroup lowerBody;
     SpriteGroup wheels;
     SpriteGroup gunBarrel;
+
 public:
     Tank() {
+
         Color* white = new Color(1.0f, 1.0f, 1.0f);
-        PolygonSprite* polygonSp = new PolygonSprite(
+
+        PolygonSprite* upperSp = new PolygonSprite(
             white, // color
-            glm::vec3(0.3f, 0.0f, 0.0f), // position
-            Shape::Rectangle(0.1f, 0.1f, true)); // Shape
-        this->upperBody.addSprite(polygonSp);
+            glm::vec3(0.0f, 0.0f, 0.0f), // position
+            Shape::Circle(0.05f, 0.0f, 0.1f)); // Shape
+        PolygonSprite* lowerSp = new PolygonSprite(
+            white, // color
+            glm::vec3(0.0f, 0.0f, 0.0f), // position
+            Shape::Rectangle(0.2f, 0.1f, 0.1f, 0.0f)); // Shape
+        upperBody.addSprite(upperSp);
+        lowerBody.addSprite(lowerSp);
+
+        for (int i = 0; i < 6; i++) {
+            PolygonSprite* wheel = new PolygonSprite(
+                white, // color
+                glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
+                Shape::Circle(0.015f, 0, 0, 0.5f)); // Shape
+            wheels.addSprite(wheel);
+        }
+
         addSubGroup(&upperBody);
         addSubGroup(&lowerBody);
         addSubGroup(&wheels);
@@ -53,7 +70,7 @@ void main(int argc, char **argv)
     glutInitWindowSize(640, 640);
     init();
 
-    glutCreateWindow("Hello OpenGL");
+    glutCreateWindow("Bored Students - Assn1");
     glutDisplayFunc(renderScene);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glewInit();
