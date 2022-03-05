@@ -3,40 +3,59 @@
 #include <GL/freeglut.h>
 #include <glm/vec3.hpp>
 #include <vector>
+#include "sprite.h"
+#include "spriteGroup.h"
+#include "shapes.h"
 
-std::vector<glm::vec3> position = {
-    glm::vec3(0.0f, 0.0f, 0.0f),
-    glm::vec3(1.0f, 0.0f, 0.0f),
-    glm::vec3(0.0f, 1.0f, 0.0f),
+class Tank : public SpriteGroup {
+private:
+    SpriteGroup upperBody;
+    SpriteGroup lowerBody;
+    SpriteGroup wheels;
+    SpriteGroup gunBarrel;
+public:
+    Tank() {
+        Color* white = new Color(1.0f, 1.0f, 1.0f);
+        PolygonSprite* polygonSp = new PolygonSprite(
+            white, // color
+            glm::vec3(0.3f, 0.0f, 0.0f), // position
+            Shape::Rectangle(0.1f, 0.1f, true)); // Shape
+        this->upperBody.addSprite(polygonSp);
+        addSubGroup(&upperBody);
+        addSubGroup(&lowerBody);
+        addSubGroup(&wheels);
+        addSubGroup(&gunBarrel);
+    }
 };
+
+std::vector<SpriteGroup> allGroups = {};
+
+void init(void) {
+    Tank* tank = new Tank();
+    allGroups.push_back(*tank);
+}
 
 void renderScene(void)
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_POLYGON);
-    for (size_t i = 0; i < position.size(); i++)
+    glClear(GL_COLOR_BUFFER_BIT); 
+    for (size_t i = 0; i < allGroups.size(); i++)
     {
-        glVertex3f(position[i][0], position[i][1], position[i][2]);
+        allGroups[i].draw();
     }
-    glEnd();
     glFlush();
 }
+
 void main(int argc, char **argv)
 {
-    // inspect array elements and print to console
-    const float *probe = &position[0].x;
-    for (size_t i = 0; i < position.size() * 3; i++)
-    {
-        std::cout << probe[i] << std::endl;
-    }
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
-    glutInitWindowSize(320, 320);
+    glutInitWindowSize(640, 640);
+    init();
+
     glutCreateWindow("Hello OpenGL");
     glutDisplayFunc(renderScene);
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glewInit();
     glutMainLoop();
 }
