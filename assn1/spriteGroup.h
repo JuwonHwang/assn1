@@ -56,4 +56,27 @@ public:
             sprites[i]->move(_position);
         }
     }
+
+    virtual void rotate(float theta) {
+        for (size_t i = 0; i < subGroups.size(); i++)
+        {
+            subGroups[i]->rotate(theta);
+        }
+        for (size_t i = 0; i < sprites.size(); i++)
+        {
+            sprites[i]->rotate(theta);
+        }
+    }
+
+    virtual void update(void) {
+        for (size_t i = 0; i < subGroups.size(); i++)
+        {
+            subGroups[i]->update();
+        }
+        for (size_t i = 0; i < sprites.size(); i++)
+        {
+            sprites[i]->update();
+        }
+    }
+
 };

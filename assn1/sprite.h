@@ -5,6 +5,9 @@
 #include <vector>
 #include "colors.h"
 
+#define PI (3.14159265359f)
+#define PI2 (6.28318530718f)
+
 typedef glm::mat<3,3,float> Transform;
 typedef glm::vec3 Position;
 typedef std::vector<glm::vec3> Positions;
@@ -16,6 +19,7 @@ typedef std::vector<glm::vec3> Positions;
 class Sprite { 
 private:
     Position position; // 위치
+    float rotation; // 회전
     Color color; // 색상
 public:
     Sprite() {}
@@ -36,11 +40,19 @@ public:
         position = _position;
     }
 
+    float getRotation() {
+        return rotation;
+    }
+
+    void setRotation(float _rotation) {
+        rotation = std::max(std::min(_rotation, PI2), 0.0f);
+    }
+
     virtual void draw(void) = 0; // virtual method - 자신을 화면에 그리는 함수
     virtual void move(const Position _position) { // virtual method - 자신의 위치을 이동하는 함수
         setPostion(getPosition() + _position);
     }
-    virtual void rotate(void) = 0; // virtual method - 회전을 위한 함수
+    virtual void rotate(float theta) {}; // virtual method - 회전을 위한 함수
     virtual void update(void) = 0; // virtual method - 위치, 형태 등을 업데이트를 위한 함수
 };
 
@@ -66,6 +78,10 @@ public:
         }
         glEnd();
     }
-    virtual void rotate(void) {};
+
+    virtual void rotate(float theta) {
+        
+    }
+
     virtual void update(void) {};
 };
