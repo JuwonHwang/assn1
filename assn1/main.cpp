@@ -5,33 +5,33 @@
 #include <vector>
 #include "tank.h"
 
-std::vector<SpriteGroup> allGroups = {}; // ëª¨ë“  ê·¸ë£¹ì„ ì €ì¥í•  ë²¡í„°
+std::vector<SpriteGroup> allGroups = {}; // ¸ğµç ±×·ìÀ» ÀúÀåÇÒ º¤ÅÍ
 
 void init(void) {
-    Tank* tank = new Tank(); // íƒ±í¬ ìƒì„±
-    allGroups.push_back(*tank); // íƒ±í¬ë¥¼ í™”ë©´ì— ì¶œë ¥í•  ê·¸ë£¹ì— ì¶”ê°€
+    Tank* tank = new Tank(); // ÅÊÅ© »ı¼º
+    allGroups.push_back(*tank); // ÅÊÅ©¸¦ È­¸é¿¡ Ãâ·ÂÇÒ ±×·ì¿¡ Ãß°¡
 }
 
 void renderScene(void)
 {
-    glClear(GL_COLOR_BUFFER_BIT); // í™”ë©´ ì§€ìš°ê¸° 
+    glClear(GL_COLOR_BUFFER_BIT); // È­¸é Áö¿ì±â 
     for (size_t i = 0; i < allGroups.size(); i++)
     {
-        allGroups[i].draw(); // ëª¨ë“  ìŠ¤í”„ë¼ì´íŠ¸ ê·¸ë¦¬ê¸°
+        allGroups[i].draw(); // ¸ğµç ½ºÇÁ¶óÀÌÆ® ±×¸®±â
     }
-    glFlush(); // ì¶œë ¥ ë²„í¼ ë¹„ìš°ê¸°
+    glFlush(); // Ãâ·Â ¹öÆÛ ºñ¿ì±â
 }
 
-void main(int argc, char **argv)
+void main(int argc, char** argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(640, 640);
-    init(); // ì´ˆê¸°í™”
+    init(); // ÃÊ±âÈ­
 
     glutCreateWindow("Bored Students - Assn1");
-    glutDisplayFunc(renderScene); // í™”ë©´ ì¶œë ¥í•¨ìˆ˜ ì„¤ì •
+    glutDisplayFunc(renderScene); // È­¸é Ãâ·ÂÇÔ¼ö ¼³Á¤
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glewInit();
     glutMainLoop();
