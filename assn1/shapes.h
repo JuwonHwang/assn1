@@ -14,6 +14,9 @@ typedef std::vector<glm::vec3> Positions;
 
 namespace Shape
 {
+    /*
+    너비, 높이, 중심점(x, y)를 받아 직사각형 vertices를 반환함
+    */ 
     Positions Rectangle(const float width, const float height, const float x, const float y) {
         const glm::vec3 center = glm::vec3(x, y, 0.0f);
         return {
@@ -24,6 +27,10 @@ namespace Shape
         };
     }
 
+    /*
+    반지름, 중심점(x, y)를 받아 원 vertices 반환함.
+    원을 그리는 정확도(점의 개수)를 정할 수 있음.
+    */
     Positions Circle(const float radius, const float x, const float y, const float accuracy = 1.0f) {
         const glm::vec3 center = glm::vec3(x, y, 0.0f);
         Positions position = {};
@@ -34,6 +41,10 @@ namespace Shape
         return position;
     }
 
+    /*
+    너비, 높이, 중심점(x, y)를 받아 타원 vertices 반환함.
+    타원을 그리는 정확도(점의 개수)를 정할 수 있음.
+    */
     Positions Ellipse(const float width, const float height, const float x, const float y, const float accuracy = 1.0f) {
         const glm::vec3 center = glm::vec3(x, y, 0.0f);
         Positions position = {};
