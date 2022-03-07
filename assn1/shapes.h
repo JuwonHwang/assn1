@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <glm/vec3.hpp>
@@ -34,7 +33,7 @@ namespace Shape
     Positions Circle(const float radius, const float x, const float y, const float accuracy = 1.0f) {
         const glm::vec3 center = glm::vec3(x, y, 0.0f);
         Positions position = {};
-        int count = 24 * accuracy;
+        int count = int(24 * accuracy);
         for (int i = 0; i < count; i++) {
             position.push_back(glm::vec3(radius * cosf(PI2 * i / count), radius * sinf(PI2 * i / count), 0.0f) + center);
         }
@@ -48,7 +47,7 @@ namespace Shape
     Positions Ellipse(const float width, const float height, const float x, const float y, const float accuracy = 1.0f) {
         const glm::vec3 center = glm::vec3(x, y, 0.0f);
         Positions position = {};
-        int count = 24 * accuracy;
+        int count = int(24 * accuracy);
         for (int i = 0; i < count; i++) {
             position.push_back(glm::vec3(width * cosf(PI2 * i / count), height * sinf(PI2 * i / count), 0.0f) + center);
         }
