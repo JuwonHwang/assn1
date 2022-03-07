@@ -22,6 +22,26 @@ void renderScene(void)
     glFlush(); // 출력 버퍼 비우기
 }
 
+void specialkeyboard(int key, int x, int y) {
+    switch (key) {
+    case GLUT_KEY_LEFT:
+        std::cout << "left";
+        for (size_t i = 0; i < allGroups.size(); i++)
+        {
+            allGroups[i].move(glm::vec3(-0.01f, 0.0f, 0.0f));
+        }
+        break;
+    case GLUT_KEY_RIGHT:
+        std::cout << "right";
+        for (size_t i = 0; i < allGroups.size(); i++)
+        {
+            allGroups[i].move(glm::vec3(0.01f, 0.0f, 0.0f));
+        }
+        break;
+    }
+    glutPostRedisplay();
+}
+
 void main(int argc, char** argv)
 {
     glutInit(&argc, argv);
@@ -32,6 +52,7 @@ void main(int argc, char** argv)
 
     glutCreateWindow("Bored Students - Assn1");
     glutDisplayFunc(renderScene); // 화면 출력함수 설정
+    glutSpecialFunc(specialkeyboard);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glewInit();
     glutMainLoop();
