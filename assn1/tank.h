@@ -10,8 +10,8 @@ private:
     SpriteGroup gunBarrel;
 
 public:
-    Tank() { // ÅÊÅ© »ı¼ºÀÚ
-        // ¸ğµç ¸â¹ö¸¦ ÇÏÀ§ ±×·ì¿¡ Ãß°¡
+    Tank() { // íƒ±í¬ ìƒì„±ì
+        // ëª¨ë“  ë©¤ë²„ë¥¼ í•˜ìœ„ ê·¸ë£¹ì— ì¶”ê°€
         addSubGroup(&upperBody);
         addSubGroup(&lowerBody);
         addSubGroup(&wheels);
@@ -21,8 +21,8 @@ public:
 
         PolygonSprite* upperSp = new PolygonSprite(
             white, // color
-            glm::vec3(0.0f, 0.0f, 0.0f), // position
-            Shape::Circle(0.05f, 0.0f, 0.1f)); // Shape
+            glm::vec3(0.0f, 0.1f, 0.0f), // position
+            Shape::Circle(0.05f, 0.0f, 0.0f)); // Shape
         upperBody.addSprite(upperSp);
 
         PolygonSprite* lowerSp = new PolygonSprite(
@@ -39,5 +39,10 @@ public:
             wheels.addSprite(wheel);
         }
 
+        PolygonSprite* gunBarrelSp = new PolygonSprite(
+            white, // color
+            glm::vec3(0.0f, 0.1f, 0.0f), // position
+            Shape::Rectangle(0.2f, 0.01f, 0.0f, 0.005f)); // Shape
+        gunBarrel.addSprite(gunBarrelSp);
     }
 };
