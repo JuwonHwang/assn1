@@ -8,12 +8,14 @@
 /*
 * sprite를 모아 한번에 그리는 것을 처리하기 위한 Tree 자료구조
 */
-class SpriteGroup {
+class SpriteGroup : public Sprite {
 private:
     std::vector<Sprite*> sprites;
     std::vector<SpriteGroup*> subGroups;
 public:
     SpriteGroup() {};
+    SpriteGroup(std::string _name, Position _position) : Sprite(_name, _position) {};
+
     ~SpriteGroup() { // 할당해제
         for (size_t i = 0; i < subGroups.size(); i++)
         {
@@ -35,36 +37,14 @@ public:
         return subGroups.size();
     }
 
-    virtual void draw(void) { // 그룹의 모든 요소를 화면에 그리는 함수
+    virtual void draw(const Position _position) { // 그룹의 모든 요소를 화면에 그리는 함수
         for (size_t i = 0; i < subGroups.size(); i++)
         {
-            subGroups[i]->draw();
+            subGroups[i]->draw(_position + getPosition());
         }
         for (size_t i = 0; i < sprites.size(); i++)
         {
-            sprites[i]->draw();
-        }
-    }
-
-    virtual void move(const Position _position) { // 그룹의 모든 요소를 이동하는 함수
-        for (size_t i = 0; i < subGroups.size(); i++)
-        {
-            subGroups[i]->move(_position);
-        }
-        for (size_t i = 0; i < sprites.size(); i++)
-        {
-            sprites[i]->move(_position);
-        }
-    }
-
-    virtual void rotate(float theta) {
-        for (size_t i = 0; i < subGroups.size(); i++)
-        {
-            subGroups[i]->rotate(theta);
-        }
-        for (size_t i = 0; i < sprites.size(); i++)
-        {
-            sprites[i]->rotate(theta);
+            sprites[i]->draw(_position + getPosition());
         }
     }
 
@@ -78,5 +58,4 @@ public:
             sprites[i]->update();
         }
     }
-
 };
