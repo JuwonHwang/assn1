@@ -66,6 +66,7 @@ public:
         }
         glEnd();
     }
+    
     virtual void rotate(void) {};
     virtual void update(void) {};
 };

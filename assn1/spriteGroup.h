@@ -35,6 +35,10 @@ public:
         return subGroups.size();
     }
 
+    std::vector<SpriteGroup*> getSubGroups() {
+        return subGroups;
+    }
+
     virtual void draw(void) { // 그룹의 모든 요소를 화면에 그리는 함수
         for (size_t i = 0; i < subGroups.size(); i++)
         {

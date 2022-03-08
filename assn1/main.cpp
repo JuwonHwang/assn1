@@ -38,9 +38,6 @@ void specialkeyboard(int key, int x, int y) {
             allGroups[i].move(glm::vec3(0.01f, 0.0f, 0.0f));
         }
         break;
-    case ' ':
-        std::cout << "spacebar";
-        break;
     }
     glutPostRedisplay();
 }
@@ -49,9 +46,16 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        break;
+        //SpriteGroup bomb;
+        //PolygonSprite* ball = new PolygonSprite(
+        //    new Color(1.0f, 1.0f, 1.0f), // color
+        //    glm::vec3(0.0f, 0.0f, 0.0f), // position
+        //    Shape::Circle(0.05f, 0.0f, 0.1f)); // Shape
+        //bomb.addSprite(ball);
+        //allGroups.push_back(bomb);
+        //break;
     }
-    //glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 void main(int argc, char** argv)
