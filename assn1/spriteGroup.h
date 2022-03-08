@@ -10,6 +10,7 @@
 */
 class SpriteGroup {
 private:
+    Position position;
     std::vector<Sprite*> sprites;
     std::vector<SpriteGroup*> subGroups;
 public:
@@ -34,6 +35,15 @@ public:
         subGroups.push_back(subGroup);
         return subGroups.size();
     }
+
+    Position getPosition() { // 자신의 위치를 반환
+        return position;
+    }
+
+    void setPostion(Position _position) { // 위치를 받아 자신의 위치를 변경
+        position = _position;
+    }
+
 
     virtual void draw(void) { // 그룹의 모든 요소를 화면에 그리는 함수
         for (size_t i = 0; i < subGroups.size(); i++)
