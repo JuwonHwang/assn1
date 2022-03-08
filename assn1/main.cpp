@@ -38,8 +38,20 @@ void specialkeyboard(int key, int x, int y) {
             allGroups[i].move(glm::vec3(0.01f, 0.0f, 0.0f));
         }
         break;
+    case ' ':
+        std::cout << "spacebar";
+        break;
     }
     glutPostRedisplay();
+}
+
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+    case ' ':
+        std::cout << "spacebar";
+        break;
+    }
+    //glutPostRedisplay();
 }
 
 void main(int argc, char** argv)
@@ -53,6 +65,7 @@ void main(int argc, char** argv)
     glutCreateWindow("Bored Students - Assn1");
     glutDisplayFunc(renderScene); // 화면 출력함수 설정
     glutSpecialFunc(specialkeyboard);
+    glutKeyboardFunc(keyboard);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glewInit();
     glutMainLoop();
