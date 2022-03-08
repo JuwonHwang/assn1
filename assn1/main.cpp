@@ -7,8 +7,10 @@
 
 std::vector<SpriteGroup> allGroups = {}; // 모든 그룹을 저장할 벡터
 
+Tank* tank;
+
 void init(void) {
-    Tank* tank = new Tank(); // 탱크 생성
+    tank = new Tank(); // 탱크 생성
     allGroups.push_back(*tank); // 탱크를 화면에 출력할 그룹에 추가
 }
 
@@ -26,17 +28,11 @@ void specialkeyboard(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_LEFT:
         std::cout << "left";
-        for (size_t i = 0; i < allGroups.size(); i++)
-        {
-            allGroups[i].move(glm::vec3(-0.01f, 0.0f, 0.0f));
-        }
+        tank->move(glm::vec3(-0.01f, 0.0f, 0.0f));
         break;
     case GLUT_KEY_RIGHT:
         std::cout << "right";
-        for (size_t i = 0; i < allGroups.size(); i++)
-        {
-            allGroups[i].move(glm::vec3(0.01f, 0.0f, 0.0f));
-        }
+        tank->move(glm::vec3(0.01f, 0.0f, 0.0f));
         break;
     }
     glutPostRedisplay();
