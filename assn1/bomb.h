@@ -22,7 +22,7 @@ public:
     }
 
     bool landed_checker() { // ÆøÅºÀÌ ¶¥¿¡ ´ê¾Ò´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
-        if (this->getPosition()[1] <= 0.0f) {
+        if (this->getPosition()[1] <= -0.03f) {
             return true;
         }
         else {
