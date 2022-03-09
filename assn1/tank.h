@@ -1,6 +1,7 @@
 #pragma once
 #include "spriteGroup.h"
 #include "shapes.h"
+#include "cannon.h"
 #include <string>
 
 class Tank : public SpriteGroup {
@@ -43,11 +44,12 @@ public:
             wheels.addSprite(wheel);
         }
 
-        PolygonSprite* gunBarrelSp = new PolygonSprite(
+        Cannon* gunBarrelSp = new Cannon(
             "gunBarrel",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
-            Shape::Rectangle(0.2f, 0.01f, 0.0f, 0.005f)); // Shape
+            Shape::Rectangle(0.2f, 0.01f, 0.0f, 0.005f),
+            glm::vec3(0.2f, 0.005f, 0.0f)); // Shape
         gunBarrelSp->rotate(0.1f * PI);
         gunBarrel.addSprite(gunBarrelSp);
         gunBarrel.setPosition(Position(0.0f, 0.1f, 0.0f));
@@ -57,4 +59,10 @@ public:
     void rotateGunBarrel(const float dir) {
         gunBarrel.getSprites()[0]->rotate(dir);
     }
+
+    const float getGunBarrelDirection() {
+        return gunBarrel.getSprites()[0]->getRotation();
+    }
+
+    
 };
