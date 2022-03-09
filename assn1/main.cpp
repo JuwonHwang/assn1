@@ -5,6 +5,7 @@
 #include <vector>
 #include "tank.h"
 #include "bomb.h"
+#include "land.h"
 
 std::vector<SpriteGroup*> allGroups = {}; // 모든 그룹을 저장할 벡터
 Tank* tank;
@@ -12,7 +13,9 @@ Tank* tank;
 //bool bomb_exist = false;
 
 void init(void) {
+    Land* land = new Land("land", glm::vec3(0.0f, 0.0f, 0.0f));
     tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
+    allGroups.push_back(land);
     allGroups.push_back(tank); // 탱크를 화면에 출력할 그룹에 추가
 }
 

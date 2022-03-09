@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="colors.h" />
     <ClInclude Include="bomb.h" />
+    <ClInclude Include="land.h" />
     <ClInclude Include="shapes.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="spriteGroup.h" />
