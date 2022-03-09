@@ -22,7 +22,7 @@ public:
     }
 
     bool landedChecker() { // ÆøÅºÀÌ ¶¥¿¡ ´ê¾Ò´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
-        if (this->getPosition()[1] <= -0.03f) {
+        if (this->getPosition()[1] <= 0.0f) {
             return true;
         }
         else {
@@ -32,7 +32,7 @@ public:
 
     virtual void update() {
         SpriteGroup::update();
-        if (landed_checker()) {
+        if (landedChecker()) {
             this->kill();
         }
     }
