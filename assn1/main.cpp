@@ -4,9 +4,11 @@
 #include <glm/vec3.hpp>
 #include <vector>
 #include "tank.h"
+#include "bomb.h"
 
 std::vector<SpriteGroup*> allGroups = {}; // 모든 그룹을 저장할 벡터
 Tank* tank;
+Bomb* bomb;
 
 void init(void) {
     tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
@@ -41,14 +43,9 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        //SpriteGroup bomb;
-        //PolygonSprite* ball = new PolygonSprite(
-        //    new Color(1.0f, 1.0f, 1.0f), // color
-        //    glm::vec3(0.0f, 0.0f, 0.0f), // position
-        //    Shape::Circle(0.05f, 0.0f, 0.1f)); // Shape
-        //bomb.addSprite(ball);
-        //allGroups.push_back(bomb);
-        //break;
+        bomb = new Bomb("bomb", glm::vec3(0.0f, 0.0f, 0.0f)); // 폭탄 생성
+        allGroups.push_back(bomb);
+        break;
     }
     glutPostRedisplay();
 }
