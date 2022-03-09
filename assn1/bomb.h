@@ -29,4 +29,11 @@ public:
             return false;
         }
     }
+
+    virtual void update() {
+        SpriteGroup::update();
+        if (landed_checker()) {
+            this->kill();
+        }
+    }
 };
