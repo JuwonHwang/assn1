@@ -2,13 +2,15 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <glm/vec3.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <vector>
 #include "colors.h"
 
 #define PI (3.14159265359f)
 #define PI2 (6.28318530718f)
 
-typedef glm::mat<3,3,float> Transform;
+typedef glm::mat4 Transform;
 typedef glm::vec3 Position;
 typedef std::vector<glm::vec3> Positions;
 
@@ -38,23 +40,32 @@ public:
         return position;
     }
     
-    void setPostion(Position _position) { // 위치를 받아 자신의 위치를 변경
+    void setPosition(Position _position) { // 위치를 받아 자신의 위치를 변경
         position = _position;
     }
 
-    float getRotation() {
+    const float getRotation() {
         return rotation;
     }
 
     void setRotation(float _rotation) {
-        rotation = std::max(std::min(_rotation, PI2), 0.0f);
+        rotation = _rotation;
+        while (rotation > PI2) {
+            rotation -= PI2;
+        }
     }
 
-    virtual void draw(Position _position) {}; // virtual method - 자신을 화면에 그리는 함수
+    virtual void draw(const Position _position, const float _rotaiton) {}; // virtual method - 자신을 화면에 그리는 함수
+
     virtual void move(const Position _position) { // virtual method - 자신의 위치을 이동하는 함수
-        setPostion(getPosition() + _position);
+        setPosition(getPosition() + _position);
     }
-    virtual void rotate(float theta) {}; // virtual method - 회전을 위한 함수
+
+    virtual const float rotate(const float theta) { // virtual method - 회전을 위한 함수
+        setRotation(getRotation() + theta);
+        return getRotation();
+    }
+
     virtual void update(void) { // virtual method - 위치, 형태 등을 업데이트를 위한 함수
         position += vel;
         vel += acc;
@@ -88,21 +99,20 @@ public:
         vertices = _vertices;
     }
 
-    virtual void draw(Position _position) { // 자신(polygon sprite)을 화면에 그리는 함수
+    virtual void draw(const Position _position, const float _rotaiton) { // 자신(polygon sprite)을 화면에 그리는 함수
         glColor3f(getColor()[0], getColor()[1], getColor()[2]);
         glBegin(GL_POLYGON);
         for (size_t i = 0; i < vertices.size(); i++)
         {
-            glVertex3f(_position[0] + getPosition()[0] + vertices[i][0],
-                       _position[1] + getPosition()[1] + vertices[i][1],
-                       _position[2] + getPosition()[2] + vertices[i][2]);
+            Transform transform = Transform(1.0f);
+            transform = glm::translate(transform, _position + getPosition()); 
+            transform = glm::rotate(transform, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+            
+            glm::vec4 drawPosition = transform * glm::vec4(vertices[i], 1);
+            
+            glVertex3f(drawPosition[0], drawPosition[1], drawPosition[1]);
         }
         glEnd();
     }
-
-    virtual void rotate(float theta) {
-        
-    }
-
-    virtual void update(void) {};
 };
+

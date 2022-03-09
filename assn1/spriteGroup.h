@@ -37,14 +37,22 @@ public:
         return subGroups.size();
     }
 
-    virtual void draw(const Position _position) { // 그룹의 모든 요소를 화면에 그리는 함수
+    std::vector<Sprite*> getSprites() {
+        return sprites;
+    }
+
+    std::vector<SpriteGroup*> getSubGroup() {
+        return subGroups;
+    }
+
+    virtual void draw(const Position _position, const float _rotation) { // 그룹의 모든 요소를 화면에 그리는 함수
         for (size_t i = 0; i < subGroups.size(); i++)
         {
-            subGroups[i]->draw(_position + getPosition());
+            subGroups[i]->draw(_position + getPosition(), _rotation + getRotation());
         }
-        for (size_t i = 0; i < sprites.size(); i++)
+        for (size_t j = 0; j < sprites.size(); j++)
         {
-            sprites[i]->draw(_position + getPosition());
+            sprites[j]->draw(_position + getPosition(), _rotation + getRotation());
         }
     }
 

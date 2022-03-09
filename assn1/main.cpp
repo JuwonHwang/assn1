@@ -11,7 +11,6 @@ Tank* tank;
 void init(void) {
     tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
     allGroups.push_back(tank); // 탱크를 화면에 출력할 그룹에 추가
-    tank->move(glm::vec3(0.5f, 0.0f, 0.0f));
 }
 
 void renderScene(void)
@@ -19,7 +18,7 @@ void renderScene(void)
     glClear(GL_COLOR_BUFFER_BIT); // 화면 지우기 
     for (size_t i = 0; i < allGroups.size(); i++)
     {
-        allGroups[i]->draw(glm::vec3(0.0f, 0.0f, 0.0f)); // 모든 스프라이트 그리기
+        allGroups[i]->draw(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f); // 모든 스프라이트 그리기
     }
     glFlush(); // 출력 버퍼 비우기
 }

@@ -46,8 +46,15 @@ public:
         PolygonSprite* gunBarrelSp = new PolygonSprite(
             "gunBarrel",
             white, // color
-            glm::vec3(0.0f, 0.1f, 0.0f), // position
+            glm::vec3(0.0f, 0.0f, 0.0f), // position
             Shape::Rectangle(0.2f, 0.01f, 0.0f, 0.005f)); // Shape
+        gunBarrelSp->rotate(0.1f * PI);
         gunBarrel.addSprite(gunBarrelSp);
+        gunBarrel.setPosition(Position(0.0f, 0.1f, 0.0f));
+
+    }
+
+    void rotateGunBarrel(const float dir) {
+        gunBarrel.getSprites()[0]->rotate(dir);
     }
 };
