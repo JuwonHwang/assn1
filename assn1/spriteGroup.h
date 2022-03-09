@@ -12,9 +12,17 @@ class SpriteGroup : public Sprite {
 private:
     std::vector<Sprite*> sprites;
     std::vector<SpriteGroup*> subGroups;
+    std::vector<std::vector<Sprite*>*> groups;
+
 public:
     SpriteGroup() {};
-    SpriteGroup(std::vector<std::vector<Sprite*>*> _group, std::string _name, Position _position) : Sprite(_group, _name, _position) {};
+    SpriteGroup(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : Sprite(_name, _position) {
+        groups = _groups;
+        std::cout << getName() << " - group size : " << _groups.size() << std::endl;
+        for (size_t i = 0; i < _groups.size(); i++) {
+            _groups[i]->push_back(this);
+        }
+    };
 
     ~SpriteGroup() { // 할당해제
         for (size_t i = 0; i < subGroups.size(); i++)

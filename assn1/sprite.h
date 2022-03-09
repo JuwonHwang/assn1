@@ -26,15 +26,10 @@ private:
     glm::vec3 acc = glm::vec3(0.0f, 0.0f, 0.0f); // acceleration
     float rotation = 0.0f; // 회전
     
-    std::vector<std::vector<Sprite*>*> groups;
 
 public:
     Sprite() {}
-    Sprite(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) {
-        groups = _groups;
-        for (size_t i = 0; i < _groups.size(); i++) {
-            groups[i]->push_back(this);
-        }
+    Sprite(std::string _name, Position _position) {
         position = _position;
         name = _name;
     }
@@ -101,7 +96,7 @@ private:
     Color color; // 색상
 
 public:
-    ColoredSprite(std::vector<std::vector<Sprite*>*> _group, Color* _color, std::string _name, Position _position) : Sprite(_group, _name, _position) {
+    ColoredSprite(Color* _color, std::string _name, Position _position) : Sprite(_name, _position) {
         color = *_color;
     }
 
@@ -117,8 +112,8 @@ private:
     Positions vertices; // Polygon의 vertices를 저장하기 위한 멤버
 
 public:
-    PolygonSprite(std::vector<std::vector<Sprite*>*> _group, std::string _name, Color* _color, Position _position) : ColoredSprite(_group, _color, _name, _position) {};
-    PolygonSprite(std::vector<std::vector<Sprite*>*> _group, std::string _name, Color* _color, Position _position, Positions _vertices) : ColoredSprite(_group, _color, _name, _position) {
+    PolygonSprite(std::string _name, Color* _color, Position _position) : ColoredSprite(_color, _name, _position) {};
+    PolygonSprite(std::string _name, Color* _color, Position _position, Positions _vertices) : ColoredSprite(_color, _name, _position) {
         vertices = _vertices;
     }
 
@@ -132,7 +127,11 @@ public:
             transform = glm::rotate(transform, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
             
             glm::vec4 drawPosition = transform * glm::vec4(vertices[i], 1);
-            
+            /*std::cout << "Name : " << getName()
+                << " x : " << drawPosition[0]
+                << " y : " << drawPosition[1]
+                << " z : " << drawPosition[2]
+                << std::endl;*/
             glVertex3f(drawPosition[0], drawPosition[1], drawPosition[1]);
         }
         glEnd();

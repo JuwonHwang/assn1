@@ -60,7 +60,7 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        Bomb* bomb = tank->shoot({ &allGroups }); // 폭탄 생성
+        tank->shoot({ &allGroups }); // 폭탄 생성
         //if (bomb != 0) {
         //    //bomb_exist = true;
         //    //allGroups.push_back(bomb);

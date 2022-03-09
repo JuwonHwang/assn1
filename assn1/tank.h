@@ -14,7 +14,7 @@ private:
     std::vector<Sprite*> bombs;
 
 public:
-    Tank(std::vector<std::vector<Sprite*>*> _group, std::string _name, Position _position) : SpriteGroup(_group, _name, _position) { // 탱크 생성자
+    Tank(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : SpriteGroup(_groups, _name, _position) { // 탱크 생성자
         // 모든 멤버를 하위 그룹에 추가
         addSubGroup(&upperBody);
         addSubGroup(&lowerBody);
@@ -24,7 +24,6 @@ public:
         Color* white = new Color(1.0f, 1.0f, 1.0f);
 
         PolygonSprite* upperSp = new PolygonSprite(
-            {},
             "upperBody",
             white, // color
             glm::vec3(0.0f, 0.1f, 0.0f), // position
@@ -32,7 +31,6 @@ public:
         upperBody.addSprite(upperSp);
 
         PolygonSprite* lowerSp = new PolygonSprite(
-            {},
             "lowerBody",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
@@ -41,7 +39,6 @@ public:
 
         for (int i = 0; i < 6; i++) {
             PolygonSprite* wheel = new PolygonSprite(
-                {},
                 "wheel"+std::to_string(i),
                 white, // color
                 glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
@@ -50,7 +47,6 @@ public:
         }
 
         PolygonSprite* gunBarrelSp = new PolygonSprite(
-            {},
             "gunBarrel",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
@@ -76,13 +72,14 @@ public:
         return drawPosition;
     }
 
-    Bomb* shoot(std::vector<std::vector<Sprite*>*> allGroup) {
-        allGroup.push_back(&bombs);
-        Bomb* bomb = new Bomb(allGroup, "bomb", getBarrelFrontPos()); // 폭탄 생성
-        const float dir = gunBarrel.getSprites()[0]->getRotation();
-        glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.03f;
-        bomb->setVelocity(_vel);
-        //bombs.push_back(bomb);
-        return bomb;
+    void shoot(std::vector<std::vector<Sprite*>*> allGroup) {
+        if (bombs.size() < maxBombs) {
+            allGroup.push_back(&bombs);
+            Bomb* bomb = new Bomb(allGroup, "bomb", getBarrelFrontPos()); // 폭탄 생성
+            const float dir = gunBarrel.getSprites()[0]->getRotation();
+            glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.03f;
+            bomb->setVelocity(_vel);
+            //bombs.push_back(bomb);
+        }
     }
 };
