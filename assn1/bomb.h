@@ -14,11 +14,12 @@ public:
         PolygonSprite* ball = new PolygonSprite(
             "ball",
             white, // color
-            glm::vec3(0.8f, 0.0f, 0.0f), // position
+            glm::vec3(0.0f, 0.0f, 0.0f), // position
             Shape::Circle(0.02f, 0.0f, 0.0f)); // Shape
         this->addSprite(ball); // SpriteGroup¿¡ Sprite Ãß°¡
 
         
 
     }
+
 };

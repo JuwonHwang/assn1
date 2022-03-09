@@ -43,9 +43,13 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        bomb = new Bomb("bomb", glm::vec3(0.0f, 0.0f, 0.0f)); // 폭탄 생성
+        bomb = new Bomb("bomb", tank->getPosition()); // 폭탄 생성
         allGroups.push_back(bomb);
         break;
+
+    case 't':
+        Position tank_position = tank->getPosition();
+        std::cout << tank_position[0] << tank_position[1] << tank_position[2];
     }
     glutPostRedisplay();
 }
