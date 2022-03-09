@@ -57,4 +57,8 @@ public:
     void rotateGunBarrel(const float dir) {
         gunBarrel.getSprites()[0]->rotate(dir);
     }
+
+    const Position getBarrelFrontPos() {
+        return this->getPosition() + gunBarrel.getPosition();
+    }
 };

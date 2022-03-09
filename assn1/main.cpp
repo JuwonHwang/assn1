@@ -9,6 +9,7 @@
 std::vector<SpriteGroup*> allGroups = {}; // 모든 그룹을 저장할 벡터
 Tank* tank;
 Bomb* bomb;
+bool bomb_exist = false;
 
 void init(void) {
     tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
@@ -23,6 +24,23 @@ void renderScene(void)
         allGroups[i]->draw(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f); // 모든 스프라이트 그리기
     }
     glFlush(); // ��� ���� ����
+}
+
+void disappearing_bomb() {
+    bomb_exist = false;
+    allGroups.pop_back();
+    delete bomb;
+}
+
+void shooting_bomb(int a) {
+    if (bomb_exist == true) {
+        glutTimerFunc(10, shooting_bomb, 0);
+        bomb->move(glm::vec3(0.01f, 0.0f, 0.0f));
+        if (bomb->getPosition()[0] > 0.7f) {
+            disappearing_bomb();
+        }
+        glutPostRedisplay();
+    }
 }
 
 void specialkeyboard(int key, int x, int y) {
@@ -43,8 +61,10 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        bomb = new Bomb("bomb", tank->getPosition() + glm::vec3(0.0f,0.1f,0.0f)); // 폭탄 생성
+        bomb = new Bomb("bomb", tank->getBarrelFrontPos()); // 폭탄 생성
+        bomb_exist = true;
         allGroups.push_back(bomb);
+        shooting_bomb(0);
         break;
 
     case 't': // tank 위치 프린트 테스트
