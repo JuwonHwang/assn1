@@ -8,13 +8,15 @@
 /*
 * sprite를 모아 한번에 그리는 것을 처리하기 위한 Tree 자료구조
 */
-class SpriteGroup {
+class SpriteGroup : public Sprite {
 private:
     Position position;
     std::vector<Sprite*> sprites;
     std::vector<SpriteGroup*> subGroups;
 public:
     SpriteGroup() {};
+    SpriteGroup(std::string _name, Position _position) : Sprite(_name, _position) {};
+
     ~SpriteGroup() { // 할당해제
         for (size_t i = 0; i < subGroups.size(); i++)
         {
@@ -36,34 +38,33 @@ public:
         return subGroups.size();
     }
 
-    Position getPosition() { // 자신의 위치를 반환
-        return position;
+    std::vector<Sprite*> getSprites() {
+        return sprites;
     }
 
-    void setPostion(Position _position) { // 위치를 받아 자신의 위치를 변경
-        position = _position;
+    std::vector<SpriteGroup*> getSubGroup() {
+        return subGroups;
     }
 
-
-    virtual void draw(void) { // 그룹의 모든 요소를 화면에 그리는 함수
+    virtual void draw(const Position _position, const float _rotation) { // 그룹의 모든 요소를 화면에 그리는 함수
         for (size_t i = 0; i < subGroups.size(); i++)
         {
-            subGroups[i]->draw();
+            subGroups[i]->draw(_position + getPosition(), _rotation + getRotation());
+        }
+        for (size_t j = 0; j < sprites.size(); j++)
+        {
+            sprites[j]->draw(_position + getPosition(), _rotation + getRotation());
+        }
+    }
+
+    virtual void update(void) {
+        for (size_t i = 0; i < subGroups.size(); i++)
+        {
+            subGroups[i]->update();
         }
         for (size_t i = 0; i < sprites.size(); i++)
         {
-            sprites[i]->draw();
-        }
-    }
-
-    virtual void move(const Position _position) { // 그룹의 모든 요소를 이동하는 함수
-        for (size_t i = 0; i < subGroups.size(); i++)
-        {
-            subGroups[i]->move(_position);
-        }
-        for (size_t i = 0; i < sprites.size(); i++)
-        {
-            sprites[i]->move(_position);
+            sprites[i]->update();
         }
     }
 };

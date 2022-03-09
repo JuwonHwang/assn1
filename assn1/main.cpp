@@ -5,23 +5,22 @@
 #include <vector>
 #include "tank.h"
 
-std::vector<SpriteGroup> allGroups = {}; // ¸ğµç ±×·ìÀ» ÀúÀåÇÒ º¤ÅÍ
-
+std::vector<SpriteGroup*> allGroups = {}; // ëª¨ë“  ê·¸ë£¹ì„ ì €ì¥í•  ë²¡í„°
 Tank* tank;
 
 void init(void) {
-    tank = new Tank(); // ÅÊÅ© »ı¼º
-    allGroups.push_back(*tank); // ÅÊÅ©¸¦ È­¸é¿¡ Ãâ·ÂÇÒ ±×·ì¿¡ Ãß°¡
+    tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // íƒ±í¬ ìƒì„±
+    allGroups.push_back(tank); // íƒ±í¬ë¥¼ í™”ë©´ì— ì¶œë ¥í•  ê·¸ë£¹ì— ì¶”ê°€
 }
 
 void renderScene(void)
 {
-    glClear(GL_COLOR_BUFFER_BIT); // È­¸é Áö¿ì±â 
+    glClear(GL_COLOR_BUFFER_BIT); // È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
     for (size_t i = 0; i < allGroups.size(); i++)
     {
-        allGroups[i].draw(); // ¸ğµç ½ºÇÁ¶óÀÌÆ® ±×¸®±â
+        allGroups[i]->draw(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f); // ëª¨ë“  ìŠ¤í”„ë¼ì´íŠ¸ ê·¸ë¦¬ê¸°
     }
-    glFlush(); // Ãâ·Â ¹öÆÛ ºñ¿ì±â
+    glFlush(); // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 }
 
 void specialkeyboard(int key, int x, int y) {
@@ -60,10 +59,10 @@ void main(int argc, char** argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(640, 640);
-    init(); // ÃÊ±âÈ­
+    init(); // ï¿½Ê±ï¿½È­
 
     glutCreateWindow("Bored Students - Assn1");
-    glutDisplayFunc(renderScene); // È­¸é Ãâ·ÂÇÔ¼ö ¼³Á¤
+    glutDisplayFunc(renderScene); // È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
     glutSpecialFunc(specialkeyboard);
     glutKeyboardFunc(keyboard);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
