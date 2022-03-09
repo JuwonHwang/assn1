@@ -44,6 +44,22 @@ public:
         position = _position;
     }
 
+    const glm::vec3 getVelocity() {
+        return vel;
+    }
+
+    void setVelocity(glm::vec3 _vel) {
+        vel = _vel;
+    }
+
+    const glm::vec3 getAccel() {
+        return acc;
+    }
+
+    void setAccel(glm::vec3 _acc) {
+        acc = _acc;
+    }
+
     const float getRotation() {
         return rotation;
     }

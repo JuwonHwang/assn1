@@ -1,6 +1,7 @@
 #pragma once
 #include "spriteGroup.h"
 #include "shapes.h"
+#include "bomb.h"
 #include <string>
 
 class Tank : public SpriteGroup {
@@ -9,6 +10,8 @@ private:
     SpriteGroup lowerBody;
     SpriteGroup wheels;
     SpriteGroup gunBarrel;
+    int maxBombs = 1;
+    std::vector<SpriteGroup*> bombs;
 
 public:
     Tank(std::string _name, Position _position) : SpriteGroup(_name, _position) { // 탱크 생성자
@@ -59,6 +62,26 @@ public:
     }
 
     const Position getBarrelFrontPos() {
-        return this->getPosition() + gunBarrel.getPosition();
+        Transform transform = Transform(1.0f);
+        transform = glm::translate(transform, getPosition());
+        transform = glm::translate(transform, gunBarrel.getPosition());
+        transform = glm::translate(transform, gunBarrel.getSprites()[0]->getPosition());
+        transform = glm::rotate(transform, gunBarrel.getSprites()[0]->getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        glm::vec4 drawPosition = transform * glm::vec4(0.2f, 0.005f, 0.0f, 1);
+        return drawPosition;
+    }
+
+    Bomb* shoot() {
+        Bomb* bomb = new Bomb("bomb", getBarrelFrontPos()); // 폭탄 생성
+        const float dir = gunBarrel.getSprites()[0]->getRotation();
+        glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.03f;
+        bomb->setVelocity(_vel);
+        bombs.push_back(bomb);
+        return bomb;
+    }
+
+    void removeBomb(Bomb* _bomb) {
+        bombs.erase(std::remove(bombs.begin(), bombs.end(), _bomb), bombs.end());
     }
 };

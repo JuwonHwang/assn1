@@ -18,8 +18,6 @@ public:
             Shape::Circle(0.02f, 0.0f, 0.0f)); // Shape
         this->addSprite(ball); // SpriteGroup¿¡ Sprite Ãß°¡
 
-        
-
+        setAccel(glm::vec3(0.0f, -0.001f, 0.0f));
     }
-
 };
