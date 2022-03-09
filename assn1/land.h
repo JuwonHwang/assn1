@@ -7,7 +7,7 @@ class Land : public SpriteGroup {
 private:
 
 public:
-    Land(std::string _name, Position _position) : SpriteGroup(_name, _position) { // 競 持失切
+    Land(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : SpriteGroup(_groups, _name, _position) { // 競 持失切
 
         Color* white = new Color(0.8f, 1.0f, 1.0f);
 

@@ -6,20 +6,20 @@
 
 class Tank : public SpriteGroup {
 private:
-    SpriteGroup upperBody;
-    SpriteGroup lowerBody;
-    SpriteGroup wheels;
-    SpriteGroup gunBarrel;
+    SpriteGroup* upperBody;
+    SpriteGroup* lowerBody;
+    SpriteGroup* wheels;
+    SpriteGroup* gunBarrel;
     int maxBombs = 1;
-    std::vector<SpriteGroup*> bombs;
+    std::vector<Sprite*> bombs;
 
 public:
-    Tank(std::string _name, Position _position) : SpriteGroup(_name, _position) { // 탱크 생성자
+    Tank(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : SpriteGroup(_groups, _name, _position) { // 탱크 생성자
         // 모든 멤버를 하위 그룹에 추가
-        addSubGroup(&upperBody);
-        addSubGroup(&lowerBody);
-        addSubGroup(&wheels);
-        addSubGroup(&gunBarrel);
+        upperBody = new SpriteGroup();
+        lowerBody = new SpriteGroup();
+        wheels = new SpriteGroup();
+        gunBarrel = new SpriteGroup();
 
         Color* white = new Color(1.0f, 1.0f, 1.0f);
 
@@ -28,14 +28,14 @@ public:
             white, // color
             glm::vec3(0.0f, 0.1f, 0.0f), // position
             Shape::Circle(0.05f, 0.0f, 0.0f)); // Shape
-        upperBody.addSprite(upperSp);
+        upperBody->addSprite(upperSp);
 
         PolygonSprite* lowerSp = new PolygonSprite(
             "lowerBody",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
             Shape::Rectangle(0.2f, 0.1f, 0.1f, 0.0f)); // Shape
-        lowerBody.addSprite(lowerSp);
+        lowerBody->addSprite(lowerSp);
 
         for (int i = 0; i < 6; i++) {
             PolygonSprite* wheel = new PolygonSprite(
@@ -43,7 +43,7 @@ public:
                 white, // color
                 glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
                 Shape::Circle(0.015f, 0, 0, 0.5f)); // Shape
-            wheels.addSprite(wheel);
+            wheels->addSprite(wheel);
         }
 
         PolygonSprite* gunBarrelSp = new PolygonSprite(
@@ -52,37 +52,39 @@ public:
             glm::vec3(0.0f, 0.0f, 0.0f), // position
             Shape::Rectangle(0.2f, 0.01f, 0.0f, 0.005f)); // Shape
         gunBarrelSp->rotate(0.1f * PI);
-        gunBarrel.addSprite(gunBarrelSp);
-        gunBarrel.setPosition(Position(0.0f, 0.1f, 0.0f));
+        gunBarrel->addSprite(gunBarrelSp);
+        gunBarrel->setPosition(Position(0.0f, 0.1f, 0.0f));
 
+        addSubGroup(upperBody);
+        addSubGroup(lowerBody);
+        addSubGroup(wheels);
+        addSubGroup(gunBarrel);
     }
 
     void rotateGunBarrel(const float dir) {
-        gunBarrel.getSprites()[0]->rotate(dir);
+        gunBarrel->getSprites()[0]->rotate(dir);
     }
 
     const Position getBarrelFrontPos() {
         Transform transform = Transform(1.0f);
         transform = glm::translate(transform, getPosition());
-        transform = glm::translate(transform, gunBarrel.getPosition());
-        transform = glm::translate(transform, gunBarrel.getSprites()[0]->getPosition());
-        transform = glm::rotate(transform, gunBarrel.getSprites()[0]->getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::translate(transform, gunBarrel->getPosition());
+        transform = glm::translate(transform, gunBarrel->getSprites()[0]->getPosition());
+        transform = glm::rotate(transform, gunBarrel->getSprites()[0]->getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
 
         glm::vec4 drawPosition = transform * glm::vec4(0.2f, 0.005f, 0.0f, 1);
         return drawPosition;
     }
 
-    Bomb* shoot() {
-        Bomb* bomb = new Bomb("bomb", getBarrelFrontPos()); // 폭탄 생성
-        const float dir = gunBarrel.getSprites()[0]->getRotation();
-        glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.03f;
-        bomb->setVelocity(_vel);
-        bombs.push_back(bomb);
-        return bomb;
-    }
-
-    void removeBomb(Bomb* _bomb) {
-        bombs.erase(std::remove(bombs.begin(), bombs.end(), _bomb), bombs.end());
+    void shoot(std::vector<std::vector<Sprite*>*> allGroup) {
+        if (bombs.size() < maxBombs) {
+            allGroup.push_back(&bombs);
+            Bomb* bomb = new Bomb(allGroup, "bomb", getBarrelFrontPos()); // 폭탄 생성
+            const float dir = gunBarrel->getSprites()[0]->getRotation();
+            glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.03f;
+            bomb->setVelocity(_vel);
+            //bombs.push_back(bomb);
+        }
     }
 
     bool tankLeftOutChecker() { // true면 왼쪽 화면 넘어감.
