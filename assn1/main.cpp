@@ -7,16 +7,12 @@
 #include "bomb.h"
 #include "land.h"
 
-std::vector<SpriteGroup*> allGroups = {}; // 모든 그룹을 저장할 벡터
+std::vector<Sprite*> allGroups = {}; // 모든 그룹을 저장할 벡터
 Tank* tank;
-//Bomb* bomb;
-//bool bomb_exist = false;
 
 void init(void) {
-    Land* land = new Land("land", glm::vec3(0.0f, 0.0f, 0.0f));
-    tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
-    allGroups.push_back(land);
-    allGroups.push_back(tank); // 탱크를 화면에 출력할 그룹에 추가
+    new Land({ &allGroups }, "land", glm::vec3(0.0f, 0.0f, 0.0f));
+    tank = new Tank({ &allGroups }, "tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
 }
 
 void renderScene(void)
@@ -69,13 +65,20 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        Bomb* bomb = tank->shoot(); // 폭탄 생성
-        if (bomb != 0) {
-            //bomb_exist = true;
-            allGroups.push_back(bomb);
-            //shooting_bomb(0);
+        if (tank != 0)
+        {
+            tank->shoot({ &allGroups }); // 폭탄 생성
         }
+        //if (bomb != 0) {
+        //    //bomb_exist = true;
+        //    //allGroups.push_back(bomb);
+        //    //shooting_bomb(0);
+        //}
         break;
+
+    case 'k':
+        tank->kill();
+        tank = 0;
 
     //case 't': // tank 위치 프린트 테스트
     //    Position tank_position = tank->getPosition();
@@ -85,10 +88,8 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void timer(int value) {
-    std::cout << "hi" << std::endl;
     for (size_t i = 0; i < allGroups.size(); i++)
     {
-        std::cout << "hi" << std::endl;
         allGroups[i]->update();
     }
     glutPostRedisplay();

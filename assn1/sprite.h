@@ -14,6 +14,7 @@ typedef glm::mat4 Transform;
 typedef glm::vec3 Position;
 typedef std::vector<glm::vec3> Positions;
 
+
 /*
 화면에 표시되는 물체를 그리기 위한 기본 class
 */
@@ -25,6 +26,7 @@ private:
     glm::vec3 acc = glm::vec3(0.0f, 0.0f, 0.0f); // acceleration
     float rotation = 0.0f; // 회전
     
+
 public:
     Sprite() {}
     Sprite(std::string _name, Position _position) {
@@ -125,7 +127,11 @@ public:
             transform = glm::rotate(transform, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
             
             glm::vec4 drawPosition = transform * glm::vec4(vertices[i], 1);
-            
+            /*std::cout << "Name : " << getName()
+                << " x : " << drawPosition[0]
+                << " y : " << drawPosition[1]
+                << " z : " << drawPosition[2]
+                << std::endl;*/
             glVertex3f(drawPosition[0], drawPosition[1], drawPosition[1]);
         }
         glEnd();
