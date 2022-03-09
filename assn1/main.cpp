@@ -48,11 +48,15 @@ void specialkeyboard(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_LEFT:
         std::cout << "left";
-        tank->move(glm::vec3(-0.01f, 0.0f, 0.0f));
+        if (!tank->tankLeftOutChecker()) {
+            tank->move(glm::vec3(-0.01f, 0.0f, 0.0f));
+        }
         break;
     case GLUT_KEY_RIGHT:
         std::cout << "right";
-        tank->move(glm::vec3(0.01f, 0.0f, 0.0f));
+        if (!tank->tankRightOutChecker()) {
+            tank->move(glm::vec3(0.01f, 0.0f, 0.0f));
+        }
         break;
     }
     glutPostRedisplay();

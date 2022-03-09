@@ -20,4 +20,13 @@ public:
 
         setAccel(glm::vec3(0.0f, -0.001f, 0.0f));
     }
+
+    bool landed_checker() { // ÆøÅºÀÌ ¶¥¿¡ ´ê¾Ò´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+        if (this->getPosition()[1] <= 0.0f) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 };

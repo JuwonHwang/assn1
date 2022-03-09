@@ -84,4 +84,26 @@ public:
     void removeBomb(Bomb* _bomb) {
         bombs.erase(std::remove(bombs.begin(), bombs.end(), _bomb), bombs.end());
     }
+
+    bool tankLeftOutChecker() { // true면 왼쪽 화면 넘어감.
+        float left = this->getPosition()[0] - 0.1f;
+        //float right = this->getBarrelFrontPos()[0];
+        if (left <= -0.99f) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    bool tankRightOutChecker() { // true면 오른쪽 화면 넘어감.
+        //float left = this->getPosition()[0] - 0.1f;
+        float right = this->getBarrelFrontPos()[0];
+        if (right >= 0.99f) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 };
