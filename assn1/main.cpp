@@ -8,9 +8,8 @@
 
 std::vector<SpriteGroup*> allGroups = {}; // 모든 그룹을 저장할 벡터
 Tank* tank;
-Bomb* bomb;
-bool bomb_exist = false;
-float t = 0.0f;
+//Bomb* bomb;
+//bool bomb_exist = false;
 
 void init(void) {
     tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
@@ -27,25 +26,23 @@ void renderScene(void)
     glFlush(); // ��� ���� ����
 }
 
-void disappearing_bomb() {
-    bomb_exist = false;
-    t = 0;
-    allGroups.pop_back();
-    delete bomb;
-}
+//void disappearing_bomb() {
+//    bomb_exist = false;
+//    allGroups.pop_back();
+//    tank->removeBomb(bomb);
+//    delete bomb;
+//}
 
-void shooting_bomb(int a) {
-    if (bomb_exist == true) {
-        glutTimerFunc(5, shooting_bomb, 0);
-        t += 0.00005;
-        float y = 0.01 - 9.8 * t;
-        bomb->move(glm::vec3(0.01, y, 0.0f));
-        if (bomb->getPosition()[1] <= 0.0f) {
-            disappearing_bomb();
-        }
-        glutPostRedisplay();
-    }
-}
+//void shooting_bomb(int a) {
+//    if (bomb_exist == true) {
+//        glutTimerFunc(10, shooting_bomb, 0);
+//        bomb->move(glm::vec3(0.01f, 0.0f, 0.0f));
+//        if (bomb->getPosition()[0] > 0.7f) {
+//            disappearing_bomb();
+//        }
+//        glutPostRedisplay();
+//    }
+//}
 
 void specialkeyboard(int key, int x, int y) {
     switch (key) {
@@ -65,17 +62,30 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        bomb = new Bomb("bomb", tank->getBarrelFrontPos()); // 폭탄 생성
-        bomb_exist = true;
-        allGroups.push_back(bomb);
-        shooting_bomb(0);
+        Bomb* bomb = tank->shoot(); // 폭탄 생성
+        if (bomb != 0) {
+            //bomb_exist = true;
+            allGroups.push_back(bomb);
+            //shooting_bomb(0);
+        }
         break;
 
-    case 't': // tank 위치 프린트 테스트
-        Position tank_position = tank->getPosition();
-        std::cout << tank_position[0] << tank_position[1] << tank_position[2];
+    //case 't': // tank 위치 프린트 테스트
+    //    Position tank_position = tank->getPosition();
+    //    std::cout << tank_position[0] << tank_position[1] << tank_position[2];
     }
     glutPostRedisplay();
+}
+
+void timer(int value) {
+    std::cout << "hi" << std::endl;
+    for (size_t i = 0; i < allGroups.size(); i++)
+    {
+        std::cout << "hi" << std::endl;
+        allGroups[i]->update();
+    }
+    glutPostRedisplay();
+    glutTimerFunc(30, timer, 0);
 }
 
 void main(int argc, char** argv)
@@ -90,6 +100,7 @@ void main(int argc, char** argv)
     glutDisplayFunc(renderScene); // ȭ�� ����Լ� ����
     glutSpecialFunc(specialkeyboard);
     glutKeyboardFunc(keyboard);
+    glutTimerFunc(0, timer, 0);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glewInit();
     glutMainLoop();

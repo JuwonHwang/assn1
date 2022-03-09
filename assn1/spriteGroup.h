@@ -10,7 +10,6 @@
 */
 class SpriteGroup : public Sprite {
 private:
-    Position position;
     std::vector<Sprite*> sprites;
     std::vector<SpriteGroup*> subGroups;
 public:
@@ -58,6 +57,8 @@ public:
     }
 
     virtual void update(void) {
+        setPosition(getPosition() + getVelocity());
+        setVelocity(getVelocity() + getAccel());
         for (size_t i = 0; i < subGroups.size(); i++)
         {
             subGroups[i]->update();
