@@ -22,6 +22,7 @@ public:
         gunBarrel = new SpriteGroup();
 
         Color* white = new Color(1.0f, 1.0f, 1.0f);
+        Color* frame_color = new Color(0.5f, 0.5f, 0.5f);
 
         PolygonSprite* upperSp = new PolygonSprite(
             "upperBody",
@@ -43,7 +44,13 @@ public:
                 white, // color
                 glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
                 Shape::Circle(0.015f, 0, 0, 0.5f)); // Shape
+            PolygonSprite* wheel_frame = new PolygonSprite(
+                "wheel_frame" + std::to_string(i),
+                frame_color, // color
+                glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
+                Shape::Rectangle(0.03f, 0.003f, 0.015f, 0.0015f)); // Shape
             wheels->addSprite(wheel);
+            wheels->addSprite(wheel_frame);
         }
 
         PolygonSprite* gunBarrelSp = new PolygonSprite(
