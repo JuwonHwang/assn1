@@ -60,13 +60,20 @@ void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
         std::cout << "spacebar";
-        tank->shoot({ &allGroups }); // 폭탄 생성
+        if (tank != 0)
+        {
+            tank->shoot({ &allGroups }); // 폭탄 생성
+        }
         //if (bomb != 0) {
         //    //bomb_exist = true;
         //    //allGroups.push_back(bomb);
         //    //shooting_bomb(0);
         //}
         break;
+
+    case 'k':
+        tank->kill();
+        tank = 0;
 
     //case 't': // tank 위치 프린트 테스트
     //    Position tank_position = tank->getPosition();
