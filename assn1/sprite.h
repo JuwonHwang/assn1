@@ -14,6 +14,7 @@ typedef glm::mat4 Transform;
 typedef glm::vec3 Position;
 typedef std::vector<glm::vec3> Positions;
 
+
 /*
 화면에 표시되는 물체를 그리기 위한 기본 class
 */
@@ -25,9 +26,15 @@ private:
     glm::vec3 acc = glm::vec3(0.0f, 0.0f, 0.0f); // acceleration
     float rotation = 0.0f; // 회전
     
+    std::vector<std::vector<Sprite*>*> groups;
+
 public:
     Sprite() {}
-    Sprite(std::string _name, Position _position) {
+    Sprite(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) {
+        groups = _groups;
+        for (size_t i = 0; i < _groups.size(); i++) {
+            groups[i]->push_back(this);
+        }
         position = _position;
         name = _name;
     }
@@ -94,7 +101,7 @@ private:
     Color color; // 색상
 
 public:
-    ColoredSprite(Color* _color, std::string _name, Position _position) : Sprite(_name, _position) {
+    ColoredSprite(std::vector<std::vector<Sprite*>*> _group, Color* _color, std::string _name, Position _position) : Sprite(_group, _name, _position) {
         color = *_color;
     }
 
@@ -110,8 +117,8 @@ private:
     Positions vertices; // Polygon의 vertices를 저장하기 위한 멤버
 
 public:
-    PolygonSprite(std::string _name, Color* _color, Position _position) : ColoredSprite(_color, _name, _position) {};
-    PolygonSprite(std::string _name, Color* _color, Position _position, Positions _vertices) : ColoredSprite(_color, _name, _position) {
+    PolygonSprite(std::vector<std::vector<Sprite*>*> _group, std::string _name, Color* _color, Position _position) : ColoredSprite(_group, _color, _name, _position) {};
+    PolygonSprite(std::vector<std::vector<Sprite*>*> _group, std::string _name, Color* _color, Position _position, Positions _vertices) : ColoredSprite(_group, _color, _name, _position) {
         vertices = _vertices;
     }
 

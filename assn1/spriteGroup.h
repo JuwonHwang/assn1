@@ -14,7 +14,7 @@ private:
     std::vector<SpriteGroup*> subGroups;
 public:
     SpriteGroup() {};
-    SpriteGroup(std::string _name, Position _position) : Sprite(_name, _position) {};
+    SpriteGroup(std::vector<std::vector<Sprite*>*> _group, std::string _name, Position _position) : Sprite(_group, _name, _position) {};
 
     ~SpriteGroup() { // 할당해제
         for (size_t i = 0; i < subGroups.size(); i++)

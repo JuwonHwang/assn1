@@ -7,11 +7,12 @@ class Bomb : public SpriteGroup {
 private:
 
 public:
-    Bomb(std::string _name, Position _position) : SpriteGroup(_name, _position) { // 气藕 积己磊
+    Bomb(std::vector<std::vector<Sprite*>*> _group, std::string _name, Position _position) : SpriteGroup(_group, _name, _position) { // 气藕 积己磊
 
         Color* white = new Color(1.0f, 1.0f, 1.0f);
 
         PolygonSprite* ball = new PolygonSprite(
+            _group,
             "ball",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
