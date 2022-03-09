@@ -10,6 +10,7 @@ std::vector<SpriteGroup*> allGroups = {}; // 모든 그룹을 저장할 벡터
 Tank* tank;
 Bomb* bomb;
 bool bomb_exist = false;
+float t = 0.0f;
 
 void init(void) {
     tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
@@ -28,15 +29,18 @@ void renderScene(void)
 
 void disappearing_bomb() {
     bomb_exist = false;
+    t = 0;
     allGroups.pop_back();
     delete bomb;
 }
 
 void shooting_bomb(int a) {
     if (bomb_exist == true) {
-        glutTimerFunc(10, shooting_bomb, 0);
-        bomb->move(glm::vec3(0.01f, 0.0f, 0.0f));
-        if (bomb->getPosition()[0] > 0.7f) {
+        glutTimerFunc(5, shooting_bomb, 0);
+        t += 0.00005;
+        float y = 0.01 - 9.8 * t;
+        bomb->move(glm::vec3(0.01, y, 0.0f));
+        if (bomb->getPosition()[1] <= 0.0f) {
             disappearing_bomb();
         }
         glutPostRedisplay();

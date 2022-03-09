@@ -59,6 +59,7 @@ public:
     }
 
     const Position getBarrelFrontPos() {
-        return this->getPosition() + gunBarrel.getPosition();
+        glm::vec3 front = glm::vec3(0.2f,0.05f, 0.0f);
+        return this->getPosition() + gunBarrel.getPosition()+ front;
     }
 };
