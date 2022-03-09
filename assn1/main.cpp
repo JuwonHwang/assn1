@@ -5,11 +5,12 @@
 #include <vector>
 #include "tank.h"
 
-std::vector<SpriteGroup> allGroups = {}; // 모든 그룹을 저장할 벡터
+std::vector<SpriteGroup*> allGroups = {}; // 모든 그룹을 저장할 벡터
+Tank* tank;
 
 void init(void) {
-    Tank* tank = new Tank(); // 탱크 생성
-    allGroups.push_back(*tank); // 탱크를 화면에 출력할 그룹에 추가
+    tank = new Tank("tank", glm::vec3(0.0f, 0.0f, 0.0f)); // 탱크 생성
+    allGroups.push_back(tank); // 탱크를 화면에 출력할 그룹에 추가
 }
 
 void renderScene(void)
@@ -17,7 +18,7 @@ void renderScene(void)
     glClear(GL_COLOR_BUFFER_BIT); // 화면 지우기 
     for (size_t i = 0; i < allGroups.size(); i++)
     {
-        allGroups[i].draw(); // 모든 스프라이트 그리기
+        allGroups[i]->draw(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f); // 모든 스프라이트 그리기
     }
     glFlush(); // 출력 버퍼 비우기
 }
