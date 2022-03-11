@@ -94,25 +94,41 @@ public:
         }
     }
 
-    bool tankLeftOutChecker() { // true면 왼쪽 화면 넘어감.
-        float left = this->getPosition()[0] - 0.1f;
-        //float right = this->getBarrelFrontPos()[0];
-        if (left <= -0.99f) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    //bool tankLeftOutChecker() { // true면 왼쪽 화면 넘어감.
+    //    float left = this->getPosition()[0] - 0.1f;
+    //    //float right = this->getBarrelFrontPos()[0];
+    //    if (left <= -0.99f) {
+    //        return true;
+    //    }
+    //    else {
+    //        return false;
+    //    }
+    //}
+
+    //bool tankRightOutChecker() { // true면 오른쪽 화면 넘어감.
+    //    //float left = this->getPosition()[0] - 0.1f;
+    //    float right = this->getBarrelFrontPos()[0];
+    //    if (right >= 0.99f) {
+    //        return true;
+    //    }
+    //    else {
+    //        return false;
+    //    }
+    //}
+
+    bool checkCollision(const float speed) {
+        //bool left = (getPosition()[0] - 0.1f + speed) <= -1.0f;
+        //bool right = (getBarrelFrontPos()[0] + speed) >= 1.0f;
+        glm::vec4 rect = getRectangle(Position(0.0f, 0.0f, 0.0f), 0.0f);
+        //std::cout << rect[0] << ", " << rect[1] << std::endl;
+        bool left = (rect[0] + speed) <= -1.0f;
+        bool right = (rect[1] + speed) >= 1.0f;
+        return ((speed < 0) && left || (speed > 0) && right);
     }
 
-    bool tankRightOutChecker() { // true면 오른쪽 화면 넘어감.
-        //float left = this->getPosition()[0] - 0.1f;
-        float right = this->getBarrelFrontPos()[0];
-        if (right >= 0.99f) {
-            return true;
-        }
-        else {
-            return false;
+    void shift(const float speed) {
+        if (!checkCollision(speed)) {
+            move(glm::vec3(speed, 0.0f, 0.0f));
         }
     }
 };
