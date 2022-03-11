@@ -61,13 +61,17 @@ public:
     }
 
     virtual void draw(const Position _position, const float _rotation) { // 그룹의 모든 요소를 화면에 그리는 함수
+        Transform transform = Transform(1.0f);
+        transform = glm::translate(transform, _position);
+        transform = glm::rotate(transform, _rotation + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+        glm::vec3 rotatedPos = transform * glm::vec4(getPosition(), 1.0f);
         for (size_t i = 0; i < subGroups.size(); i++)
         {
-            subGroups[i]->draw(_position + getPosition(), _rotation + getRotation());
+            subGroups[i]->draw(rotatedPos, _rotation + getRotation());
         }
         for (size_t j = 0; j < sprites.size(); j++)
         {
-            sprites[j]->draw(_position + getPosition(), _rotation + getRotation());
+            sprites[j]->draw(rotatedPos, _rotation + getRotation());
         }
     }
 

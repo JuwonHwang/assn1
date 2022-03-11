@@ -124,9 +124,9 @@ public:
         for (size_t i = 0; i < vertices.size(); i++)
         {
             Transform transform = Transform(1.0f);
-            transform = glm::translate(transform, _position + getPosition()); 
+            transform = glm::translate(transform, _position); 
             transform = glm::rotate(transform, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
-            
+            transform = glm::translate(transform, getPosition());
             glm::vec4 drawPosition = transform * glm::vec4(vertices[i], 1);
             /*std::cout << "Name : " << getName()
                 << " x : " << drawPosition[0]
