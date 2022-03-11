@@ -84,4 +84,26 @@ public:
         }
     }
 
+    // return the smallest Rectangle which could contain this spriteGroup 
+    virtual const glm::vec4 getRectangle(const Position _position, const float _rotaiton) {
+        glm::vec4 rect(1.0f, -1.0f, -1.0f, 1.0f);
+        for (size_t i = 0; i < subGroups.size(); i++)
+        {
+            glm::vec4 newRect = subGroups[i]->getRectangle(_position + getPosition(), _rotaiton + getRotation());
+            rect[0] = std::min(rect[0], newRect[0]);
+            rect[1] = std::max(rect[1], newRect[1]);
+            rect[2] = std::max(rect[2], newRect[2]);
+            rect[3] = std::min(rect[3], newRect[3]);
+        }
+        for (size_t i = 0; i < sprites.size(); i++)
+        {
+            glm::vec4 newRect = sprites[i]->getRectangle(_position + getPosition(), _rotaiton + getRotation());
+            rect[0] = std::min(rect[0], newRect[0]);
+            rect[1] = std::max(rect[1], newRect[1]);
+            rect[2] = std::max(rect[2], newRect[2]);
+            rect[3] = std::min(rect[3], newRect[3]);
+        }
+        return rect;
+    }
+
 };

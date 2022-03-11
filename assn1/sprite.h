@@ -73,6 +73,7 @@ public:
         }
     }
 
+    virtual const glm::vec4 getRectangle(const Position _position, const float _rotaiton) { return glm::vec4(); };
     virtual void draw(const Position _position, const float _rotaiton) {}; // virtual method - 자신을 화면에 그리는 함수
 
     virtual void move(const Position _position) { // virtual method - 자신의 위치을 이동하는 함수
@@ -137,5 +138,34 @@ public:
         glEnd();
     }
 
+    virtual const glm::vec4 getRectangle(const Position _position, const float _rotaiton) {
+        try
+        {
+            Transform transform0 = Transform(1.0f);
+            transform0 = glm::translate(transform0, _position + getPosition());
+            transform0 = glm::rotate(transform0, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+            glm::vec4 drawPosition0 = transform0 * glm::vec4(vertices[0], 1);
+            float left = drawPosition0[0];
+            float right = drawPosition0[0];
+            float top = drawPosition0[1];
+            float bottom = drawPosition0[1];
+            for (size_t i = 1; i < vertices.size(); i++)
+            {
+                Transform transform = Transform(1.0f);
+                transform = glm::translate(transform, _position + getPosition());
+                transform = glm::rotate(transform, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+                glm::vec4 drawPosition = transform * glm::vec4(vertices[i], 1);
+                left = std::min(left, drawPosition[0]);
+                right = std::max(right, drawPosition[0]);
+                top = std::max(top, drawPosition[1]);
+                bottom = std::min(bottom, drawPosition[1]);
+            }
+            return glm::vec4(left, right, top, bottom);
+        }
+        catch (const std::exception&)
+        {
+
+        }
+    }
 };
 
