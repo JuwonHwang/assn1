@@ -12,9 +12,17 @@ class SpriteGroup : public Sprite {
 private:
     std::vector<Sprite*> sprites;
     std::vector<SpriteGroup*> subGroups;
+    std::vector<std::vector<Sprite*>*> groups;
+
 public:
     SpriteGroup() {};
-    SpriteGroup(std::string _name, Position _position) : Sprite(_name, _position) {};
+    SpriteGroup(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : Sprite(_name, _position) {
+        groups = _groups;
+        std::cout << getName() << " - group size : " << _groups.size() << std::endl;
+        for (size_t i = 0; i < _groups.size(); i++) {
+            _groups[i]->push_back(this);
+        }
+    };
 
     ~SpriteGroup() { // 할당해제
         for (size_t i = 0; i < subGroups.size(); i++)
@@ -25,6 +33,13 @@ public:
         {
             delete sprites[i];
         }
+    }
+
+    void kill() {
+        for (size_t i = 0; i < groups.size(); i++) {
+            groups[i]->erase(std::remove(groups[i]->begin(), groups[i]->end(), this), groups[i]->end());
+        }
+        delete this;
     }
 
     size_t addSprite(Sprite* subSprite) { // 그룹에 sprite 추가
@@ -57,6 +72,8 @@ public:
     }
 
     virtual void update(void) {
+        setPosition(getPosition() + getVelocity());
+        setVelocity(getVelocity() + getAccel());
         for (size_t i = 0; i < subGroups.size(); i++)
         {
             subGroups[i]->update();
@@ -66,4 +83,5 @@ public:
             sprites[i]->update();
         }
     }
+
 };
