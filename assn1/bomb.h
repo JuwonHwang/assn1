@@ -15,7 +15,8 @@ public:
             "ball",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
-            Shape::Circle(0.02f, 0.0f, 0.0f)); // Shape
+            Shape::Circle(0.02f, 0.0f, 0.0f), // Shape
+            Shape::Circle(0.02f, 0.0f, 0.0f)); // Mask
         this->addSprite(ball); // SpriteGroup¿¡ Sprite Ãß°¡
 
         setAccel(glm::vec3(0.0f, -0.001f, 0.0f));

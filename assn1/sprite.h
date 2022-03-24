@@ -25,7 +25,8 @@ private:
     glm::vec3 vel = glm::vec3(0.0f, 0.0f, 0.0f); // velocity
     glm::vec3 acc = glm::vec3(0.0f, 0.0f, 0.0f); // acceleration
     float rotation = 0.0f; // 회전
-    
+    std::string collisionTag = "none";
+    std::vector<std::string> collisionGroup;
 
 public:
     Sprite() {}
@@ -73,6 +74,22 @@ public:
         }
     }
 
+    const std::string getCollisionTag() {
+        return collisionTag;
+    }
+
+    void setCollisionTag(std::string _collisionTag) {
+        collisionTag = _collisionTag;
+    }
+
+    std::vector<std::string> getCollisionGroup() {
+        return collisionGroup;
+    }
+
+    void setCollisionGroup(std::vector<std::string> _collisionGroup) {
+        collisionGroup = _collisionGroup;
+    }
+
     virtual const glm::vec4 getRectangle(const Position _position, const float _rotaiton) { return glm::vec4(); };
     virtual void draw(const Position _position, const float _rotaiton) {}; // virtual method - 자신을 화면에 그리는 함수
 
@@ -89,6 +106,9 @@ public:
         position += vel;
         vel += acc;
     }
+
+    virtual bool getCollision(std::vector<Sprite*> _collisionGroup) { return false; }
+    virtual Positions getCollisionMask() { return Positions(); }
 };
 
 
@@ -111,11 +131,17 @@ public:
 class PolygonSprite : public ColoredSprite {
 private:
     Positions vertices; // Polygon의 vertices를 저장하기 위한 멤버
+    Positions collisionMask;
 
 public:
     PolygonSprite(std::string _name, Color _color, Position _position) : ColoredSprite(_color, _name, _position) {};
-    PolygonSprite(std::string _name, Color _color, Position _position, Positions _vertices) : ColoredSprite(_color, _name, _position) {
+    PolygonSprite(std::string _name, 
+        Color _color, 
+        Position _position, 
+        Positions _vertices,
+        Positions _collisionMask) : ColoredSprite(_color, _name, _position) {
         vertices = _vertices;
+        collisionMask = _collisionMask;
     }
 
     virtual void draw(const Position _position, const float _rotaiton) { // 자신(polygon sprite)을 화면에 그리는 함수
@@ -168,5 +194,33 @@ public:
 
         }
     }
+
+    virtual Positions getCollisionMask(const Position _position, const float _rotaiton) {
+        try
+        {
+            Transform transform0 = Transform(1.0f);
+            transform0 = glm::translate(transform0, _position + getPosition());
+            transform0 = glm::rotate(transform0, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+            glm::vec4 drawPosition0 = transform0 * glm::vec4(vertices[0], 1);
+            float left = drawPosition0[0];
+            float right = drawPosition0[0];
+            float top = drawPosition0[1];
+            float bottom = drawPosition0[1];
+            Positions transformMask;
+            for (size_t i = 1; i < collisionMask.size(); i++)
+            {
+                Transform transform = Transform(1.0f);
+                transform = glm::translate(transform, _position + getPosition());
+                transform = glm::rotate(transform, _rotaiton + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+                transformMask.push_back(transform * glm::vec4(collisionMask[i], 1));
+            }
+            return transformMask;
+        }
+        catch (const std::exception&)
+        {
+
+        }
+    }
+
 };
 
