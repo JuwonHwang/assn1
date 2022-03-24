@@ -57,6 +57,9 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void timer(int value) {
+    if (enemy->randShoot()) {
+        enemy->shoot({ &allGroups });
+    }
     for (size_t i = 0; i < allGroups.size(); i++)
     {
         allGroups[i]->update();

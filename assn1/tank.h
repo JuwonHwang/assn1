@@ -13,6 +13,7 @@ private:
     SpriteGroup* gunBarrel;
     int maxBombs = 1;
     std::vector<Sprite*> bombs;
+    int shootTimer = 0;
 
 public:
     Tank(std::vector<std::vector<Sprite*>*> _groups, 
@@ -56,6 +57,7 @@ public:
             wheels->addSprite(wheel);
             wheels->addSprite(wheel_frame);
         }
+
 
         PolygonSprite* gunBarrelSp = new PolygonSprite(
             "gunBarrel",
@@ -113,4 +115,24 @@ public:
             move(glm::vec3(speed, 0.0f, 0.0f));
         }
     }
+
+    int getShootTimer(void) {
+        return shootTimer;
+    }
+
+    void setShootTimer(int _timer) {
+        shootTimer = _timer;
+    }
+
+    bool randShoot() {
+        shootTimer += rand() % 10;
+        if (shootTimer > 100) {
+            shootTimer = 0;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 };
