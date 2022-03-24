@@ -9,7 +9,7 @@ private:
 public:
     Bomb(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : SpriteGroup(_groups, _name, _position) { // ÆøÅº »ý¼ºÀÚ
 
-        Color* white = new Color(1.0f, 1.0f, 1.0f);
+        Color white = Color(1.0f, 1.0f, 1.0f);
 
         PolygonSprite* ball = new PolygonSprite(
             "ball",

@@ -6,6 +6,7 @@
 
 class Tank : public SpriteGroup {
 private:
+    float hp = 100;
     SpriteGroup* upperBody;
     SpriteGroup* lowerBody;
     SpriteGroup* wheels;
@@ -14,15 +15,18 @@ private:
     std::vector<Sprite*> bombs;
 
 public:
-    Tank(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : SpriteGroup(_groups, _name, _position) { // 탱크 생성자
+    Tank(std::vector<std::vector<Sprite*>*> _groups, 
+        std::string _name, 
+        Position _position,
+        Color _color ) : SpriteGroup(_groups, _name, _position) { // 탱크 생성자
         // 모든 멤버를 하위 그룹에 추가
         upperBody = new SpriteGroup();
         lowerBody = new SpriteGroup();
         wheels = new SpriteGroup();
         gunBarrel = new SpriteGroup();
 
-        Color* white = new Color(1.0f, 1.0f, 1.0f);
-        Color* frame_color = new Color(0.5f, 0.5f, 0.5f);
+        Color white = _color;
+        Color frame_color = Color(0.5f, 0.5f, 0.5f);
 
         PolygonSprite* upperSp = new PolygonSprite(
             "upperBody",

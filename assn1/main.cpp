@@ -12,7 +12,7 @@ Tank* tank;
 
 void init(void) {
     new Land({ &allGroups }, "land", glm::vec3(0.0f, 0.0f, 0.0f));
-    tank = new Tank({ &allGroups }, "tank", glm::vec3(0.0f, 0.0f, 0.0f));
+    tank = new Tank({ &allGroups }, "tank", glm::vec3(0.0f, 0.0f, 0.0f), Color(0.5f, 1.0f, 0.5f));
 }
 
 void renderScene(void)

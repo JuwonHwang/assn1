@@ -97,8 +97,8 @@ private:
     Color color; // 색상
 
 public:
-    ColoredSprite(Color* _color, std::string _name, Position _position) : Sprite(_name, _position) {
-        color = *_color;
+    ColoredSprite(Color _color, std::string _name, Position _position) : Sprite(_name, _position) {
+        color = _color;
     }
 
     Color getColor() { // 자신의 색상을 반환
@@ -113,8 +113,8 @@ private:
     Positions vertices; // Polygon의 vertices를 저장하기 위한 멤버
 
 public:
-    PolygonSprite(std::string _name, Color* _color, Position _position) : ColoredSprite(_color, _name, _position) {};
-    PolygonSprite(std::string _name, Color* _color, Position _position, Positions _vertices) : ColoredSprite(_color, _name, _position) {
+    PolygonSprite(std::string _name, Color _color, Position _position) : ColoredSprite(_color, _name, _position) {};
+    PolygonSprite(std::string _name, Color _color, Position _position, Positions _vertices) : ColoredSprite(_color, _name, _position) {
         vertices = _vertices;
     }
 

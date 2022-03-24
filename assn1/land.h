@@ -9,7 +9,7 @@ private:
 public:
     Land(std::vector<std::vector<Sprite*>*> _groups, std::string _name, Position _position) : SpriteGroup(_groups, _name, _position) { // ¶¥ »ý¼ºÀÚ
 
-        Color* white = new Color(0.8f, 1.0f, 1.0f);
+        Color white = Color(0.8f, 1.0f, 1.0f);
 
         PolygonSprite* land = new PolygonSprite(
             "land_sp",

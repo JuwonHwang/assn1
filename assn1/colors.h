@@ -9,17 +9,17 @@ private:
 
 public:
 	Color() {
-		this->red = 0.0f;
-		this->green = 0.0f;
-		this->blue = 0.0f;
-		this->alpha = 0.0f;
+		red = 0.0f;
+		green = 0.0f;
+		blue = 0.0f;
+		alpha = 0.0f;
 	};
 
-	Color(float red, float green, float blue, float alpha = 1.0f) {
-		this->red = red;
-		this->green = green;
-		this->blue = blue;
-		this->alpha = alpha;
+	Color(float _red, float _green, float _blue, float _alpha = 1.0f) {
+		red = _red;
+		green = _green;
+		blue = _blue;
+		alpha = _alpha;
 	}
 
 	float& operator [] (const int index)
