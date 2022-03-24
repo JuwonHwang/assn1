@@ -9,10 +9,13 @@
 
 std::vector<Sprite*> allGroups = {};
 Tank* tank;
+Tank* enemy;
 
 void init(void) {
     new Land({ &allGroups }, "land", glm::vec3(0.0f, 0.0f, 0.0f));
     tank = new Tank({ &allGroups }, "tank", glm::vec3(0.0f, 0.0f, 0.0f), Color(0.5f, 1.0f, 0.5f));
+    enemy = new Tank({ &allGroups }, "enemy", glm::vec3(0.7f, 0.0f, 0.0f), Color(0.7f, 0.5f, 0.5f));
+    enemy->rotateGunBarrel(0.8 * PI);
 }
 
 void renderScene(void)
