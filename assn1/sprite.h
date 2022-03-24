@@ -119,7 +119,8 @@ public:
     }
 
     virtual void draw(const Position _position, const float _rotaiton) { // 자신(polygon sprite)을 화면에 그리는 함수
-        glColor3f(getColor()[0], getColor()[1], getColor()[2]);
+        Color _color = getColor();
+        glColor3f(_color[0], _color[1], _color[2]);
         glBegin(GL_POLYGON);
         for (size_t i = 0; i < vertices.size(); i++)
         {

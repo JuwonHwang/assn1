@@ -22,6 +22,13 @@ public:
 		alpha = _alpha;
 	}
 
+	Color(const Color& _color) {
+		red = _color.red;
+		green = _color.green;
+		blue = _color.blue;
+		alpha = _color.alpha;
+	}
+
 	float& operator [] (const int index)
 	{
 		if (index == 0) {
