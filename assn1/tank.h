@@ -50,18 +50,22 @@ public:
         lowerBody->addSprite(lowerSp);
 
         for (int i = 0; i < 6; i++) {
+            SpriteGroup* wheel_unit = new SpriteGroup();
+
             PolygonSprite* wheel = new PolygonSprite(
                 "wheel"+std::to_string(i),
                 white, // color
-                glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
+                glm::vec3(0.0f,0.0f,0.0f), // position
                 Shape::Circle(0.015f, 0, 0, 0.5f)); // Shape
             PolygonSprite* wheel_frame = new PolygonSprite(
                 "wheel_frame" + std::to_string(i),
                 frame_color, // color
-                glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
+                glm::vec3(0.0f,0.0f,0.0f), // position
                 Shape::Rectangle(0.03f, 0.003f, 0.015f, 0.0015f)); // Shape
-            wheels->addSprite(wheel);
-            wheels->addSprite(wheel_frame);
+            wheel_unit->addSprite(wheel);
+            wheel_unit->addSprite(wheel_frame);
+            wheel_unit->setPosition(glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f));
+            wheels->addSubGroup(wheel_unit);
         }
 
         PolygonSprite* gunBarrelSp = new PolygonSprite(
@@ -141,6 +145,20 @@ public:
         if (!checkCollision(speed)) {
             move(glm::vec3(speed, 0.0f, 0.0f));
         }
+        if (speed > 0) {
+            for (int i = 0; i < 6; i++) {
+                wheels->getSubGroup()[i]->getSprites()[0]->rotate(-0.1);
+                wheels->getSubGroup()[i]->getSprites()[1]->rotate(-0.1);
+            }
+        }
+        else {
+            for (int i = 0; i < 6; i++) {
+                wheels->getSubGroup()[i]->getSprites()[0]->rotate(0.1);
+                wheels->getSubGroup()[i]->getSprites()[1]->rotate(0.1);
+            }
+        }
+
+
     }
 
     void angleUpGunBarrel() {
@@ -155,7 +173,7 @@ public:
         this->gunBarrel->setColor(gun_color);
     }
 
-    void updatePower() {
+    void updateGunBarrelColor() {
 
         switch (power) {
         case 1:

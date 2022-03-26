@@ -63,14 +63,14 @@ void keyboard(unsigned char key, int x, int y) {
         if (tank->power < 5) {
             tank->power += 1;
         }
-        tank->updatePower();
+        tank->updateGunBarrelColor();
         break;
     case 'q':
         //std::cout << "power down";
         if (tank->power > 1) {
             tank->power -= 1;
         }
-        tank->updatePower();
+        tank->updateGunBarrelColor();
         break;
     }
 
