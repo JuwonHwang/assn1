@@ -51,22 +51,22 @@ void keyboard(unsigned char key, int x, int y) {
         tank = 0;
         break;
     case 'w':
-        std::cout << "angle up";
+        //std::cout << "angle up";
         tank->angleUpGunBarrel();
         break;
     case 's':
-        std::cout << "angle down";
+        //std::cout << "angle down";
         tank->angleDownGunBarrel();
         break;
     case 'e':
-        std::cout << "power up";
+        //std::cout << "power up";
         if (tank->power < 5) {
             tank->power += 1;
         }
         tank->updatePower();
         break;
     case 'q':
-        std::cout << "power down";
+        //std::cout << "power down";
         if (tank->power > 1) {
             tank->power -= 1;
         }

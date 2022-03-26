@@ -99,7 +99,7 @@ public:
             allGroup.push_back(&bombs);
             Bomb* bomb = new Bomb(allGroup, "bomb", getBarrelFrontPos()); // 폭탄 생성
             const float dir = gunBarrel->getSprites()[0]->getRotation();
-            glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.03f;
+            glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.01f * float(power);
             bomb->setVelocity(_vel);
             //bombs.push_back(bomb);
         }
