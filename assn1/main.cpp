@@ -49,7 +49,21 @@ void keyboard(unsigned char key, int x, int y) {
     case 'k':
         tank->kill();
         tank = 0;
+        break;
+    case 'w':
+        std::cout << "angle up";
+        break;
+    case 's':
+        std::cout << "angle down";
+        break;
+    case 'e':
+        std::cout << "power up";
+        break;
+    case 'q':
+        std::cout << "power down";
+        break;
     }
+
     glutPostRedisplay();
 }
 
