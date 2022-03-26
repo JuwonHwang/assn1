@@ -13,8 +13,15 @@ private:
     SpriteGroup* gunBarrel;
     int maxBombs = 1;
     std::vector<Sprite*> bombs;
+    Color red = Color(1.0f, 0.3f, 0.3f);
+    Color yellow = Color(0.7f, 0.7f, 0.0f);
+    Color green = Color(0.5f, 1.0f, 0.5f);
+    Color blue = Color(0.0f, 0.0f, 0.7f);
+    Color purple = Color(0.3f, 0.0f, 1.0f);
+
 
 public:
+    int power = 3;
     Tank(std::vector<std::vector<Sprite*>*> _groups, 
         std::string _name, 
         Position _position,
@@ -66,10 +73,10 @@ public:
         gunBarrel->addSprite(gunBarrelSp);
         gunBarrel->setPosition(Position(0.0f, 0.1f, 0.0f));
 
+        addSubGroup(gunBarrel);
         addSubGroup(upperBody);
         addSubGroup(lowerBody);
         addSubGroup(wheels);
-        addSubGroup(gunBarrel);
     }
 
     void rotateGunBarrel(const float dir) {
@@ -142,5 +149,30 @@ public:
 
     void angleDownGunBarrel() {
         this->rotateGunBarrel(-0.1);
+    }
+
+    void changeGunBarrelColor(Color gun_color) {
+        this->gunBarrel->setColor(gun_color);
+    }
+
+    void updatePower() {
+
+        switch (power) {
+        case 1:
+            changeGunBarrelColor(blue);
+            break;
+        case 2:
+            changeGunBarrelColor(purple);
+            break;
+        case 3:
+            changeGunBarrelColor(green);
+            break;
+        case 4:
+            changeGunBarrelColor(yellow);
+            break;
+        case 5:
+            changeGunBarrelColor(red);
+            break;
+        }
     }
 };

@@ -89,6 +89,7 @@ public:
         position += vel;
         vel += acc;
     }
+    virtual void setColor(const Color _color) {};
 };
 
 
@@ -103,6 +104,10 @@ public:
 
     Color getColor() { // 자신의 색상을 반환
         return color;
+    }
+
+    virtual void setColor(const Color _color) {
+        this->color = _color;
     }
 
 };

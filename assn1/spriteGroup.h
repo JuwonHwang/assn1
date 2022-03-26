@@ -110,4 +110,9 @@ public:
         return rect;
     }
 
+    void setColor(Color c) {
+        this->getSprites()[0]->setColor(c);
+
+    }
+
 };

@@ -60,9 +60,17 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case 'e':
         std::cout << "power up";
+        if (tank->power < 5) {
+            tank->power += 1;
+        }
+        tank->updatePower();
         break;
     case 'q':
         std::cout << "power down";
+        if (tank->power > 1) {
+            tank->power -= 1;
+        }
+        tank->updatePower();
         break;
     }
 
