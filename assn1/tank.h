@@ -135,4 +135,12 @@ public:
             move(glm::vec3(speed, 0.0f, 0.0f));
         }
     }
+
+    void angleUpGunBarrel() {
+        this->rotateGunBarrel(0.1);
+    }
+
+    void angleDownGunBarrel() {
+        this->rotateGunBarrel(-0.1);
+    }
 };

@@ -52,9 +52,11 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case 'w':
         std::cout << "angle up";
+        tank->angleUpGunBarrel();
         break;
     case 's':
         std::cout << "angle down";
+        tank->angleDownGunBarrel();
         break;
     case 'e':
         std::cout << "power up";
