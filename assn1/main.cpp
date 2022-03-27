@@ -89,7 +89,18 @@ void timer(int value) {
         new_all[i]->update();
     }
     glutPostRedisplay();
-    glutTimerFunc(30, timer, 0);
+    if (tank->getHp() <= 0 && enemy->getHp() <= 0) {
+        std::cout << "DRAW..." << std::endl;
+    }
+    else if (tank->getHp() <= 0) {
+        std::cout << "YOU LOSE!" << std::endl;
+    }
+    else if (enemy->getHp() <= 0) {
+        std::cout << "YOU WIN!!!" << std::endl;
+    }
+    else {
+        glutTimerFunc(30, timer, 0);
+    }
 }
 
 void main(int argc, char** argv)
