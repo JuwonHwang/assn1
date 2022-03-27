@@ -110,6 +110,10 @@ public:
         return rect;
     }
 
+    void setColor(Color c) {
+        this->getSprites()[0]->setColor(c);
+    }
+
     virtual Positions getCollisionMask(const Position _position, const float _rotation) {
         Positions vertices;
         Transform transform = Transform(1.0f);

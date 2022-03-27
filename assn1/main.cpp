@@ -53,7 +53,31 @@ void keyboard(unsigned char key, int x, int y) {
     case 'k':
         tank->kill();
         tank = 0;
+        break;
+    case 'w':
+        //std::cout << "angle up";
+        tank->angleUpGunBarrel();
+        break;
+    case 's':
+        //std::cout << "angle down";
+        tank->angleDownGunBarrel();
+        break;
+    case 'e':
+        //std::cout << "power up";
+        if (tank->power < 5) {
+            tank->power += 1;
+        }
+        tank->updateGunBarrelColor();
+        break;
+    case 'q':
+        //std::cout << "power down";
+        if (tank->power > 1) {
+            tank->power -= 1;
+        }
+        tank->updateGunBarrelColor();
+        break;
     }
+
     glutPostRedisplay();
 }
 

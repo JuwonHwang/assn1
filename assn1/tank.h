@@ -13,9 +13,16 @@ private:
     SpriteGroup* gunBarrel;
     int maxBombs = 1;
     std::vector<Sprite*> bombs;
+    Color red = Color(1.0f, 0.3f, 0.3f);
+    Color yellow = Color(0.7f, 0.7f, 0.0f);
+    Color green = Color(0.5f, 1.0f, 0.5f);
+    Color blue = Color(0.0f, 0.0f, 0.7f);
+    Color purple = Color(0.3f, 0.0f, 1.0f);
+
     int shootTimer = 0;
 
 public:
+    int power = 3;
     Tank(std::vector<std::vector<Sprite*>*> _groups, 
         std::string _name, 
         Position _position,
@@ -50,20 +57,24 @@ public:
         lowerBody->addSprite(lowerSp);
 
         for (int i = 0; i < 6; i++) {
+            SpriteGroup* wheel_unit = new SpriteGroup();
+
             PolygonSprite* wheel = new PolygonSprite(
                 "wheel"+std::to_string(i),
                 white, // color
-                glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
-                Shape::Circle(0.015f, 0, 0, 0.5f), // Shape
-                Positions()); // Mask
+                glm::vec3(0.0f,0.0f,0.0f), // position
+                Shape::Circle(0.015f, 0, 0, 0.5f),
+                Shape::Circle(0.015f, 0, 0, 0.5f)); // Shape
             PolygonSprite* wheel_frame = new PolygonSprite(
                 "wheel_frame" + std::to_string(i),
                 frame_color, // color
-                glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
-                Shape::Rectangle(0.03f, 0.003f, 0.015f, 0.0015f), // Shape
-                Positions()); // Mask
-            wheels->addSprite(wheel);
-            wheels->addSprite(wheel_frame);
+                glm::vec3(0.0f,0.0f,0.0f), // position
+                Shape::Rectangle(0.03f, 0.005f, 0.015f, 0.0015f),
+                Shape::Rectangle(0.03f, 0.005f, 0.015f, 0.0015f)); // Shape
+            wheel_unit->addSprite(wheel);
+            wheel_unit->addSprite(wheel_frame);
+            wheel_unit->setPosition(glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f));
+            wheels->addSubGroup(wheel_unit);
         }
 
 
@@ -77,10 +88,10 @@ public:
         gunBarrel->addSprite(gunBarrelSp);
         gunBarrel->setPosition(Position(0.0f, 0.1f, 0.0f));
 
+        addSubGroup(gunBarrel);
         addSubGroup(upperBody);
         addSubGroup(lowerBody);
         addSubGroup(wheels);
-        addSubGroup(gunBarrel);
 
         setCollisionTag("tank");
     }
@@ -105,7 +116,7 @@ public:
             allGroup.push_back(&bombs);
             Bomb* bomb = new Bomb(allGroup, "bomb", getBarrelFrontPos()); // 폭탄 생성
             const float dir = gunBarrel->getSprites()[0]->getRotation();
-            glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.03f;
+            glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.01f * float(power);
             bomb->setVelocity(_vel);
             //bombs.push_back(bomb);
         }
@@ -114,6 +125,18 @@ public:
     virtual void update() {
         if (checkCollision()) {
             setVelocity(Position(0, 0.0f, 0.0f));
+        }
+        if (getVelocity().x > 0) {
+            for (int i = 0; i < 6; i++) {
+                wheels->getSubGroup()[i]->getSprites()[0]->rotate(-0.1);
+                wheels->getSubGroup()[i]->getSprites()[1]->rotate(-0.1);
+            }
+        }
+        else if(getVelocity().x < 0){
+            for (int i = 0; i < 6; i++) {
+                wheels->getSubGroup()[i]->getSprites()[0]->rotate(0.1);
+                wheels->getSubGroup()[i]->getSprites()[1]->rotate(0.1);
+            }
         }
         SpriteGroup::update();
         setVelocity(Position(0, 0, 0));
@@ -151,6 +174,39 @@ public:
         }
         else {
             return false;
+        }
+    }
+
+    void angleUpGunBarrel() {
+        this->rotateGunBarrel(0.1);
+    }
+
+    void angleDownGunBarrel() {
+        this->rotateGunBarrel(-0.1);
+    }
+
+    void changeGunBarrelColor(Color gun_color) {
+        this->gunBarrel->setColor(gun_color);
+    }
+
+    void updateGunBarrelColor() {
+
+        switch (power) {
+        case 1:
+            changeGunBarrelColor(blue);
+            break;
+        case 2:
+            changeGunBarrelColor(purple);
+            break;
+        case 3:
+            changeGunBarrelColor(green);
+            break;
+        case 4:
+            changeGunBarrelColor(yellow);
+            break;
+        case 5:
+            changeGunBarrelColor(red);
+            break;
         }
     }
 

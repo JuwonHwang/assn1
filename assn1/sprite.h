@@ -108,6 +108,7 @@ public:
         position += vel;
         vel += acc;
     }
+    virtual void setColor(const Color _color) {};
 
     virtual bool getCollision(std::vector<Sprite*> _collisionGroup) { return false; }
     virtual Positions getCollisionMask(const Position _position, const float _rotation) { return Positions(); }
@@ -125,6 +126,10 @@ public:
 
     Color getColor() { // 자신의 색상을 반환
         return color;
+    }
+
+    virtual void setColor(const Color _color) {
+        this->color = _color;
     }
 
 };
