@@ -15,7 +15,9 @@ Tank* enemy;
 void init(void) {
     new Land({ &allGroups }, "land", glm::vec3(0.0f, 0.0f, 0.0f));
     tank = new Tank({ &allGroups }, "tank", glm::vec3(0.0f, 0.0f, 0.0f), Color(0.5f, 1.0f, 0.5f));
+    tank->setDirMinMax(0, 0.5f * PI);
     enemy = new Tank({ &allGroups }, "enemy", glm::vec3(0.7f, 0.0f, 0.0f), Color(0.7f, 0.5f, 0.5f));
+    enemy->setDirMinMax(0.5f * PI, PI);
     enemy->rotateGunBarrel(0.8 * PI);
 }
 
@@ -64,17 +66,11 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case 'e':
         //std::cout << "power up";
-        if (tank->power < 5) {
-            tank->power += 1;
-        }
-        tank->updateGunBarrelColor();
+        tank->PowerUp();
         break;
     case 'q':
         //std::cout << "power down";
-        if (tank->power > 1) {
-            tank->power -= 1;
-        }
-        tank->updateGunBarrelColor();
+        tank->PowerDown();
         break;
     }
 
@@ -83,12 +79,14 @@ void keyboard(unsigned char key, int x, int y) {
 
 void timer(int value) {
     if (enemy->randShoot()) {
-        //enemy->shoot({ &allGroups });
+        enemy->shoot({ &allGroups });
     }
     checkAllCollision(allGroups);
-    for (size_t i = 0; i < allGroups.size(); i++)
+    std::vector<Sprite*> new_all;
+    new_all.insert(new_all.end(), allGroups.begin(), allGroups.end());
+    for (size_t i = 0; i < new_all.size(); i++)
     {
-        allGroups[i]->update();
+        new_all[i]->update();
     }
     glutPostRedisplay();
     glutTimerFunc(30, timer, 0);

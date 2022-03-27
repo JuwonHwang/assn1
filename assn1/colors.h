@@ -46,3 +46,9 @@ public:
 		return red;
 	}
 };
+
+const Color red = Color(1.0f, 0.3f, 0.3f);
+const Color yellow = Color(0.7f, 0.7f, 0.0f);
+const Color green = Color(0.5f, 1.0f, 0.5f);
+const Color blue = Color(0.0f, 0.0f, 0.7f);
+const Color purple = Color(0.3f, 0.0f, 1.0f);

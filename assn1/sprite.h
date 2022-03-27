@@ -94,6 +94,7 @@ public:
 
     virtual const glm::vec4 getRectangle(const Position _position, const float _rotation) { return glm::vec4(); };
     virtual void draw(const Position _position, const float _rotation) {}; // virtual method - 자신을 화면에 그리는 함수
+    virtual void kill() {};
 
     virtual void move(const Position _position) { // virtual method - 자신의 위치을 이동하는 함수
         setPosition(getPosition() + _position);

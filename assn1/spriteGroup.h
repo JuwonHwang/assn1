@@ -35,12 +35,16 @@ public:
         }
     }
 
-    void kill() {
+    virtual std::vector<std::vector<Sprite*>*>& getGroups() {
+        return groups;
+    }
+
+    virtual void kill() {
         for (size_t i = 0; i < groups.size(); i++) {
             groups[i]->erase(std::remove(groups[i]->begin(), groups[i]->end(), this), groups[i]->end());
         }
-        delete this;
     }
+
 
     size_t addSprite(Sprite* subSprite) { // 그룹에 sprite 추가
         sprites.push_back(subSprite);
