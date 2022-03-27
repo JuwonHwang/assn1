@@ -6,7 +6,7 @@
 
 class Tank : public SpriteGroup {
 private:
-    float hp = 50;
+    float hp = 3;
     SpriteGroup* upperBody;
     SpriteGroup* lowerBody;
     SpriteGroup* wheels;
@@ -165,7 +165,7 @@ public:
             return true;
         }
         if (tags.find("bomb") != tags.end()) {
-            hp -= 10;
+            hp -= 1;
         }
         return ((getVelocity().x < 0) && left || (getVelocity().x > 0) && right);
     }
