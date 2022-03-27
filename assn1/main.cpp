@@ -8,6 +8,7 @@
 #include "land.h"
 #include "collision.h"
 
+bool playing = true;
 std::vector<Sprite*> allGroups = {};
 Tank* tank;
 Tank* enemy;
@@ -23,6 +24,9 @@ void init(void) {
 
 void renderScene(void)
 {
+    if (!playing) {
+        return;
+    }
     glClear(GL_COLOR_BUFFER_BIT);
     for (size_t i = 0; i < allGroups.size(); i++)
     {
@@ -33,6 +37,9 @@ void renderScene(void)
 
 
 void specialkeyboard(int key, int x, int y) {
+    if (!playing) {
+        return;
+    }
     switch (key) {
     case GLUT_KEY_LEFT:
         tank->setVelocity(Position(-0.01f,0.0f,0.0f));
@@ -45,6 +52,9 @@ void specialkeyboard(int key, int x, int y) {
 }
 
 void keyboard(unsigned char key, int x, int y) {
+    if (!playing) {
+        return;
+    }
     switch (key) {
     case ' ':
         if (tank != 0)
@@ -91,12 +101,15 @@ void timer(int value) {
     glutPostRedisplay();
     if (tank->getHp() <= 0 && enemy->getHp() <= 0) {
         std::cout << "DRAW..." << std::endl;
+        playing = false;
     }
     else if (tank->getHp() <= 0) {
-        std::cout << "YOU LOSE!" << std::endl;
+        std::cout << "YOU LOSE!" << std::endl; 
+        playing = false;
     }
     else if (enemy->getHp() <= 0) {
-        std::cout << "YOU WIN!!!" << std::endl;
+        std::cout << "YOU WIN!!!" << std::endl; 
+        playing = false;
     }
     else {
         glutTimerFunc(30, timer, 0);
