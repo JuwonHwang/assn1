@@ -6,13 +6,17 @@
 #include "tank.h"
 #include "bomb.h"
 #include "land.h"
+#include "collision.h"
 
 std::vector<Sprite*> allGroups = {};
 Tank* tank;
+Tank* enemy;
 
 void init(void) {
     new Land({ &allGroups }, "land", glm::vec3(0.0f, 0.0f, 0.0f));
     tank = new Tank({ &allGroups }, "tank", glm::vec3(0.0f, 0.0f, 0.0f), Color(0.5f, 1.0f, 0.5f));
+    enemy = new Tank({ &allGroups }, "enemy", glm::vec3(0.7f, 0.0f, 0.0f), Color(0.7f, 0.5f, 0.5f));
+    enemy->rotateGunBarrel(0.8 * PI);
 }
 
 void renderScene(void)
@@ -29,10 +33,10 @@ void renderScene(void)
 void specialkeyboard(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_LEFT:
-        tank->shift(-0.01f);
+        tank->setVelocity(Position(-0.01f,0.0f,0.0f));
         break;
     case GLUT_KEY_RIGHT:
-        tank->shift(0.01f);
+        tank->setVelocity(Position(0.01f, 0.0f, 0.0f));
         break;
     }
     glutPostRedisplay();
@@ -78,6 +82,10 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void timer(int value) {
+    if (enemy->randShoot()) {
+        //enemy->shoot({ &allGroups });
+    }
+    checkAllCollision(allGroups);
     for (size_t i = 0; i < allGroups.size(); i++)
     {
         allGroups[i]->update();

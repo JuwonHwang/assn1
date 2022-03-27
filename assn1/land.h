@@ -15,7 +15,8 @@ public:
             "land_sp",
             white, // color
             glm::vec3(0.0f, -0.03f, 0.0f), // position
-            Shape::Rectangle(2.0f, 0.01f, 1.0f, 0.0f)); // Shape
+            Shape::Rectangle(2.0f, 0.01f, 1.0f, 0.0f), // Shape
+            Shape::Rectangle(2.0f, 0.01f, 1.0f, 0.0f)); // Mask
         this->addSprite(land); // SpriteGroup¿¡ Sprite Ãß°¡
 
     }
