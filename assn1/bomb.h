@@ -36,9 +36,11 @@ public:
         std::set<std::string> tags = getCollisionGroup();
         if (tags.find("tank") != tags.end()) {
             this->kill();
+            return;
         }
         else if (landedChecker()) {
             this->kill();
+            return;
         }
     }
 };

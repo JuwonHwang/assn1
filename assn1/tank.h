@@ -6,20 +6,17 @@
 
 class Tank : public SpriteGroup {
 private:
-    float hp = 100;
+    float hp = 3;
     SpriteGroup* upperBody;
     SpriteGroup* lowerBody;
     SpriteGroup* wheels;
     SpriteGroup* gunBarrel;
     int maxBombs = 1;
     std::vector<Sprite*> bombs;
-    Color red = Color(1.0f, 0.3f, 0.3f);
-    Color yellow = Color(0.7f, 0.7f, 0.0f);
-    Color green = Color(0.5f, 1.0f, 0.5f);
-    Color blue = Color(0.0f, 0.0f, 0.7f);
-    Color purple = Color(0.3f, 0.0f, 1.0f);
 
     int shootTimer = 0;
+    float dirMax = 0;
+    float dirMin = 0;
 
 public:
     int power = 3;
@@ -98,6 +95,10 @@ public:
 
     void rotateGunBarrel(const float dir) {
         gunBarrel->getSprites()[0]->rotate(dir);
+        float d = gunBarrel->getSprites()[0]->getRotation();
+        d = std::min(d, dirMax);
+        d = std::max(d, dirMin);
+        gunBarrel->getSprites()[0]->setRotation(d);
     }
 
     const Position getBarrelFrontPos() {
@@ -112,13 +113,12 @@ public:
     }
 
     void shoot(std::vector<std::vector<Sprite*>*> allGroup) {
-        if (bombs.size() < maxBombs) {
+        if (hp > 0 && bombs.size() < maxBombs) {
             allGroup.push_back(&bombs);
             Bomb* bomb = new Bomb(allGroup, "bomb", getBarrelFrontPos()); // 폭탄 생성
             const float dir = gunBarrel->getSprites()[0]->getRotation();
             glm::vec3 _vel = glm::vec3(cosf(dir), sinf(dir), 0) * 0.01f * float(power);
             bomb->setVelocity(_vel);
-            //bombs.push_back(bomb);
         }
     }
 
@@ -140,6 +140,20 @@ public:
         }
         SpriteGroup::update();
         setVelocity(Position(0, 0, 0));
+        if (hp <= 0) {
+            this->kill();
+        }
+    }
+
+    float getHp() {
+        return hp;
+    }
+
+    virtual void kill() {
+        while (bombs.size() > 0) {
+            bombs[0]->kill();
+        }
+        SpriteGroup::kill();
     }
 
     bool checkCollision(void) {
@@ -154,9 +168,17 @@ public:
         if (tags.find("tank") != tags.end()) {
             return true;
         }
+        if (tags.find("bomb") != tags.end()) {
+            hp -= 1;
+        }
         return ((getVelocity().x < 0) && left || (getVelocity().x > 0) && right);
     }
 
+    void setDirMinMax(float min, float max) {
+        dirMin = min;
+        dirMax = max;
+        rotateGunBarrel(0);
+    }
 
     int getShootTimer(void) {
         return shootTimer;
@@ -167,8 +189,23 @@ public:
     }
 
     bool randShoot() {
-        shootTimer += rand() % 10;
-        if (shootTimer > 100) {
+        if (hp <= 0) {
+            return false;
+        }
+        shootTimer += 1;
+        if (rand() % 20 < 2) {
+            angleUpGunBarrel();
+        }
+        if (rand() % 20 < 2) {
+            angleDownGunBarrel();
+        }
+        if (rand() % 20 < 2) {
+            PowerUp();
+        }
+        if (rand() % 20 < 2) {
+            PowerDown();
+        }
+        if (shootTimer > 30) {
             shootTimer = 0;
             return true;
         }
@@ -215,6 +252,20 @@ public:
             changeGunBarrelColor(red);
             break;
         }
+    }
+
+    void PowerUp() {
+        if (power < 5) {
+            power += 1;
+        }
+        updateGunBarrelColor();
+    }
+
+    void PowerDown() {
+        if (power > 1) {
+            power -= 1;
+        }
+        updateGunBarrelColor();
     }
 
 };
