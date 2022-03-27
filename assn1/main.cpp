@@ -11,6 +11,8 @@
 std::vector<Sprite*> allGroups = {};
 Tank* tank;
 Tank* enemy;
+bool all_pass = false;
+bool all_fail = false;
 
 void init(void) {
     new Land({ &allGroups }, "land", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -76,7 +78,14 @@ void keyboard(unsigned char key, int x, int y) {
         }
         tank->updateGunBarrelColor();
         break;
+    case 'c': // All pass
+        all_pass = !all_pass;
+        break;
+    case 'f': // All fail
+        all_fail = !all_fail;
+        break;
     }
+
 
     glutPostRedisplay();
 }
