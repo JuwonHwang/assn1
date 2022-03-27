@@ -178,11 +178,18 @@ public:
     }
 
     void angleUpGunBarrel() {
-        this->rotateGunBarrel(0.1);
+        std::cout << gunBarrel->getSprites()[0]->getRotation();
+        if (gunBarrel->getSprites()[0]->getRotation() < PI / 2 - 0.1) {
+            rotateGunBarrel(0.1);
+        }
     }
 
     void angleDownGunBarrel() {
-        this->rotateGunBarrel(-0.1);
+        std::cout << gunBarrel->getSprites()[0]->getRotation();
+        if (gunBarrel->getSprites()[0]->getRotation() > 0.1) {
+            rotateGunBarrel(-0.1);
+        }
+        
     }
 
     void changeGunBarrelColor(Color gun_color) {
