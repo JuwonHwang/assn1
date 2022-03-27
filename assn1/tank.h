@@ -20,6 +20,7 @@ private:
 
 public:
     int power = 3;
+    bool weak = false;
     Tank(std::vector<std::vector<Sprite*>*> _groups, 
         std::string _name, 
         Position _position,
@@ -169,6 +170,7 @@ public:
             return true;
         }
         if (tags.find("bomb") != tags.end()) {
+            if (weak) hp = 0;
             hp -= 1;
         }
         return ((getVelocity().x < 0) && left || (getVelocity().x > 0) && right);
@@ -215,17 +217,14 @@ public:
     }
 
     void angleUpGunBarrel() {
-        std::cout << gunBarrel->getSprites()[0]->getRotation();
-        if (gunBarrel->getSprites()[0]->getRotation() < PI / 2 - 0.1) {
-            rotateGunBarrel(0.1);
-        }
+        //std::cout << gunBarrel->getSprites()[0]->getRotation();
+        rotateGunBarrel(0.1);
     }
 
     void angleDownGunBarrel() {
-        std::cout << gunBarrel->getSprites()[0]->getRotation();
-        if (gunBarrel->getSprites()[0]->getRotation() > 0.1) {
-            rotateGunBarrel(-0.1);
-        }
+        //std::cout << gunBarrel->getSprites()[0]->getRotation();
+        
+        rotateGunBarrel(-0.1);
         
     }
 

@@ -59,7 +59,7 @@ void keyboard(unsigned char key, int x, int y) {
     }
     switch (key) {
     case ' ':
-        if (tank != 0)
+        if (tank != 0 && !all_fail)
         {
             tank->shoot({ &allGroups });
         }
@@ -86,9 +86,16 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case 'c': // All pass
         all_pass = !all_pass;
+        if (all_pass) {
+            enemy->weak = true;
+        }
+        //std::cout << all_pass;
         break;
     case 'f': // All fail
         all_fail = !all_fail;
+        if (all_fail) {
+            tank->weak = true;
+        }
         break;
     }
 
@@ -97,7 +104,7 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void timer(int value) {
-    if (enemy->randShoot()) {
+    if (enemy->randShoot() && !all_pass) {
         enemy->shoot({ &allGroups });
     }
     checkAllCollision(allGroups);
