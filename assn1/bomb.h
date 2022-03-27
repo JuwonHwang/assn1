@@ -18,7 +18,7 @@ public:
             Shape::Circle(0.02f, 0.0f, 0.0f), // Shape
             Shape::Circle(0.02f, 0.0f, 0.0f)); // Mask
         this->addSprite(ball); // SpriteGroup¿¡ Sprite Ãß°¡
-
+        setCollisionTag("bomb");
         setAccel(glm::vec3(0.0f, -0.001f, 0.0f));
     }
 
@@ -33,7 +33,11 @@ public:
 
     virtual void update() {
         SpriteGroup::update();
-        if (landedChecker()) {
+        std::set<std::string> tags = getCollisionGroup();
+        if (tags.find("tank") != tags.end()) {
+            this->kill();
+        }
+        else if (landedChecker()) {
             this->kill();
         }
     }
