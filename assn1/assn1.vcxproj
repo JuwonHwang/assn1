@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="collision.h" />
     <ClInclude Include="colors.h" />
     <ClInclude Include="bomb.h" />
     <ClInclude Include="land.h" />

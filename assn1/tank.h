@@ -13,6 +13,7 @@ private:
     SpriteGroup* gunBarrel;
     int maxBombs = 1;
     std::vector<Sprite*> bombs;
+    int shootTimer = 0;
 
 public:
     Tank(std::vector<std::vector<Sprite*>*> _groups, 
@@ -25,6 +26,8 @@ public:
         wheels = new SpriteGroup();
         gunBarrel = new SpriteGroup();
 
+        const std::string tag = "tank";
+
         Color white = _color;
         Color frame_color = Color(0.5f, 0.5f, 0.5f);
 
@@ -32,14 +35,18 @@ public:
             "upperBody",
             white, // color
             glm::vec3(0.0f, 0.1f, 0.0f), // position
-            Shape::Circle(0.05f, 0.0f, 0.0f)); // Shape
+            Shape::Circle(0.05f, 0.0f, 0.0f), // Shape
+            Shape::Circle(0.05f, 0.0f, 0.0f)); // Mask
+        upperSp->setCollisionTag(tag);
         upperBody->addSprite(upperSp);
 
         PolygonSprite* lowerSp = new PolygonSprite(
             "lowerBody",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
-            Shape::Rectangle(0.2f, 0.1f, 0.1f, 0.0f)); // Shape
+            Shape::Rectangle(0.2f, 0.1f, 0.1f, 0.0f), // Shape
+            Shape::Rectangle(0.2f, 0.1f, 0.1f, 0.0f)); // Mask
+        lowerSp->setCollisionTag(tag);
         lowerBody->addSprite(lowerSp);
 
         for (int i = 0; i < 6; i++) {
@@ -47,21 +54,25 @@ public:
                 "wheel"+std::to_string(i),
                 white, // color
                 glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
-                Shape::Circle(0.015f, 0, 0, 0.5f)); // Shape
+                Shape::Circle(0.015f, 0, 0, 0.5f), // Shape
+                Positions()); // Mask
             PolygonSprite* wheel_frame = new PolygonSprite(
                 "wheel_frame" + std::to_string(i),
                 frame_color, // color
                 glm::vec3((i - 2.5f) * 0.03f, -0.01f, 0.0f), // position
-                Shape::Rectangle(0.03f, 0.003f, 0.015f, 0.0015f)); // Shape
+                Shape::Rectangle(0.03f, 0.003f, 0.015f, 0.0015f), // Shape
+                Positions()); // Mask
             wheels->addSprite(wheel);
             wheels->addSprite(wheel_frame);
         }
+
 
         PolygonSprite* gunBarrelSp = new PolygonSprite(
             "gunBarrel",
             white, // color
             glm::vec3(0.0f, 0.0f, 0.0f), // position
-            Shape::Rectangle(0.2f, 0.01f, 0.0f, 0.005f)); // Shape
+            Shape::Rectangle(0.2f, 0.01f, 0.0f, 0.005f), // Shape
+            Positions()); // Mask
         gunBarrelSp->rotate(0.1f * PI);
         gunBarrel->addSprite(gunBarrelSp);
         gunBarrel->setPosition(Position(0.0f, 0.1f, 0.0f));
@@ -70,6 +81,8 @@ public:
         addSubGroup(lowerBody);
         addSubGroup(wheels);
         addSubGroup(gunBarrel);
+
+        setCollisionTag("tank");
     }
 
     void rotateGunBarrel(const float dir) {
@@ -98,41 +111,47 @@ public:
         }
     }
 
-    //bool tankLeftOutChecker() { // true면 왼쪽 화면 넘어감.
-    //    float left = this->getPosition()[0] - 0.1f;
-    //    //float right = this->getBarrelFrontPos()[0];
-    //    if (left <= -0.99f) {
-    //        return true;
-    //    }
-    //    else {
-    //        return false;
-    //    }
-    //}
+    virtual void update() {
+        if (checkCollision()) {
+            setVelocity(Position(0, 0.0f, 0.0f));
+        }
+        SpriteGroup::update();
+        setVelocity(Position(0, 0, 0));
+    }
 
-    //bool tankRightOutChecker() { // true면 오른쪽 화면 넘어감.
-    //    //float left = this->getPosition()[0] - 0.1f;
-    //    float right = this->getBarrelFrontPos()[0];
-    //    if (right >= 0.99f) {
-    //        return true;
-    //    }
-    //    else {
-    //        return false;
-    //    }
-    //}
-
-    bool checkCollision(const float speed) {
+    bool checkCollision(void) {
         //bool left = (getPosition()[0] - 0.1f + speed) <= -1.0f;
         //bool right = (getBarrelFrontPos()[0] + speed) >= 1.0f;
         glm::vec4 rect = getRectangle(Position(0.0f, 0.0f, 0.0f), 0.0f);
         //std::cout << rect[0] << ", " << rect[1] << std::endl;
-        bool left = (rect[0] + speed) <= -1.0f;
-        bool right = (rect[1] + speed) >= 1.0f;
-        return ((speed < 0) && left || (speed > 0) && right);
+        bool left = (rect[0] + getVelocity().x) <= -1.0f;
+        bool right = (rect[1] + getVelocity().x) >= 1.0f;
+
+        std::set<std::string> tags = getCollisionGroup();
+        if (tags.find("tank") != tags.end()) {
+            return true;
+        }
+        return ((getVelocity().x < 0) && left || (getVelocity().x > 0) && right);
     }
 
-    void shift(const float speed) {
-        if (!checkCollision(speed)) {
-            move(glm::vec3(speed, 0.0f, 0.0f));
+
+    int getShootTimer(void) {
+        return shootTimer;
+    }
+
+    void setShootTimer(int _timer) {
+        shootTimer = _timer;
+    }
+
+    bool randShoot() {
+        shootTimer += rand() % 10;
+        if (shootTimer > 100) {
+            shootTimer = 0;
+            return true;
+        }
+        else {
+            return false;
         }
     }
+
 };

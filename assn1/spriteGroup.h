@@ -89,11 +89,11 @@ public:
     }
 
     // return the smallest Rectangle which could contain this spriteGroup 
-    virtual const glm::vec4 getRectangle(const Position _position, const float _rotaiton) {
+    virtual const glm::vec4 getRectangle(const Position _position, const float _rotation) {
         glm::vec4 rect(1.0f, -1.0f, -1.0f, 1.0f);
         for (size_t i = 0; i < subGroups.size(); i++)
         {
-            glm::vec4 newRect = subGroups[i]->getRectangle(_position + getPosition(), _rotaiton + getRotation());
+            glm::vec4 newRect = subGroups[i]->getRectangle(_position + getPosition(), _rotation + getRotation());
             rect[0] = std::min(rect[0], newRect[0]);
             rect[1] = std::max(rect[1], newRect[1]);
             rect[2] = std::max(rect[2], newRect[2]);
@@ -101,7 +101,7 @@ public:
         }
         for (size_t i = 0; i < sprites.size(); i++)
         {
-            glm::vec4 newRect = sprites[i]->getRectangle(_position + getPosition(), _rotaiton + getRotation());
+            glm::vec4 newRect = sprites[i]->getRectangle(_position + getPosition(), _rotation + getRotation());
             rect[0] = std::min(rect[0], newRect[0]);
             rect[1] = std::max(rect[1], newRect[1]);
             rect[2] = std::max(rect[2], newRect[2]);
@@ -110,4 +110,22 @@ public:
         return rect;
     }
 
+    virtual Positions getCollisionMask(const Position _position, const float _rotation) {
+        Positions vertices;
+        Transform transform = Transform(1.0f);
+        transform = glm::translate(transform, _position);
+        transform = glm::rotate(transform, _rotation + getRotation(), glm::vec3(0.0f, 0.0f, 1.0f));
+        glm::vec3 rotatedPos = transform * glm::vec4(getPosition(), 1.0f);
+        for (size_t i = 0; i < subGroups.size(); i++)
+        {
+            Positions vs = subGroups[i]->getCollisionMask(rotatedPos, _rotation + getRotation());
+            vertices.insert(vertices.end(), vs.begin(), vs.end());
+        }
+        for (size_t j = 0; j < sprites.size(); j++)
+        {
+            Positions vs = sprites[j]->getCollisionMask(rotatedPos, _rotation + getRotation());
+            vertices.insert(vertices.end(), vs.begin(), vs.end());
+        }
+        return vertices;
+    }
 };
