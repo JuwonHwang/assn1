@@ -145,6 +145,10 @@ public:
         }
     }
 
+    float getHp() {
+        return hp;
+    }
+
     virtual void kill() {
         while (bombs.size() > 0) {
             bombs[0]->kill();
