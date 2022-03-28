@@ -86,16 +86,12 @@ void keyboard(unsigned char key, int x, int y) {
         break;
     case 'c': // All pass
         all_pass = !all_pass;
-        if (all_pass) {
-            enemy->weak = true;
-        }
+        enemy->setWeak(all_pass);
         //std::cout << all_pass;
         break;
     case 'f': // All fail
         all_fail = !all_fail;
-        if (all_fail) {
-            tank->weak = true;
-        }
+        tank->setWeak(all_fail);
         break;
     }
 

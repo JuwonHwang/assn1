@@ -13,6 +13,7 @@ private:
     SpriteGroup* gunBarrel;
     int maxBombs = 1;
     std::vector<Sprite*> bombs;
+    bool weak = false;
 
     int shootTimer = 0;
     float dirMax = 0;
@@ -20,7 +21,7 @@ private:
 
 public:
     int power = 3;
-    bool weak = false;
+    
     Tank(std::vector<std::vector<Sprite*>*> _groups, 
         std::string _name, 
         Position _position,
@@ -267,4 +268,7 @@ public:
         updateGunBarrelColor();
     }
 
+    void setWeak(bool _weak) {
+        weak = _weak;
+    }
 };
